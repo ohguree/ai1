@@ -1,0 +1,1137 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>배포 시뮬레이션</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 파스텔 연습장 — 홈(2카드) → 레슨(안내 말풍선 + 가짜 브라우저 창) */
+:root{
+  --bg:#e8f6ef; --surface:#ffffff; --ink:#27403d; --muted:#5f7a75; --line:#cfe6dc;
+  --mint:#9fe3c4; --mint-d:#4fb88b; --sky:#a8dcf5; --peach:#ffcfae; --butter:#ffe795; --pink:#ffc2d6;
+  --hot:#ff8f6b; --hot-ink:#7a2e14;
+  --mock-bg:#ffffff; --mock-ink:#1b2430; --hero:#111a24; --hero-ink:#f2f6fa; --hero-sub:#c9d4de; --teal:#2fe3d0;
+  --ff-d:'Jua','Noto Sans KR',sans-serif; --ff-b:'Noto Sans KR',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17262a; --surface:#213338; --ink:#e8f5ef; --muted:#9bb8b0; --line:#2f4a4f;
+  --mint:#5fcaa0; --mint-d:#8be0be; --sky:#5aaed4; --peach:#e0a37e; --butter:#e0c46a; --pink:#d98aa8;
+  --hot:#ff9f80; --hot-ink:#2b0f05; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17262a; --surface:#213338; --ink:#e8f5ef; --muted:#9bb8b0; --line:#2f4a4f;
+  --mint:#5fcaa0; --mint-d:#8be0be; --sky:#5aaed4; --peach:#e0a37e; --butter:#e0c46a; --pink:#d98aa8;
+  --hot:#ff9f80; --hot-ink:#2b0f05; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-b);font-size:16px;line-height:1.6;
+  padding-block:24px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--ff-d);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--hot);outline-offset:3px}
+[hidden]{display:none!important}
+
+/* HOME */
+.home-head{text-align:center;padding:12px 0 28px}
+.home-head h1{font-size:clamp(34px,6vw,52px)}
+.home-head p{margin:8px 0 0;color:var(--muted)}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{position:relative;text-align:left;border:3px solid var(--ink);border-radius:28px;padding:28px 26px 26px;background:var(--surface);
+  box-shadow:0 6px 0 var(--ink);transition:transform .12s, box-shadow .12s;min-width:0}
+.card:hover{transform:translateY(-3px);box-shadow:0 9px 0 var(--ink)}
+.card:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.card.net{background:var(--sky)}
+.card.git{background:var(--butter)}
+.card .tag{display:inline-block;font-size:13px;font-weight:700;padding:2px 12px;border-radius:99px;background:var(--surface);border:2px solid var(--ink);color:var(--ink)}
+.card h2{font-size:34px;margin:14px 0 4px;color:#27403d}
+.card p{margin:0;color:#27403d;font-weight:500}
+.card .go{display:inline-flex;margin-top:18px;font-family:var(--ff-d);font-size:19px;background:#fff;color:#27403d;border:2px solid #27403d;border-radius:99px;padding:4px 18px}
+.card .face{position:absolute;right:20px;top:20px;width:54px;height:54px;border-radius:50%;background:#fff;border:2px solid #27403d;display:grid;place-items:center;font-family:var(--ff-d);font-size:26px;color:#27403d}
+.note{margin-top:22px;text-align:center;color:var(--muted);font-size:14px}
+
+/* LESSON */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.back{border:2px solid var(--ink);background:var(--surface);border-radius:99px;padding:4px 16px;font-weight:700}
+.bar h1{font-size:28px}
+.steps{display:flex;gap:8px;margin-left:auto;align-items:center;font-size:14px;color:var(--muted)}
+.arr{border:2px solid var(--ink);background:var(--mint);color:#27403d;border-radius:99px;width:38px;height:34px;font-size:15px;font-weight:700;box-shadow:0 3px 0 var(--ink)}
+.arr:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.arr:disabled{background:var(--surface);color:var(--muted);opacity:.5;cursor:default;box-shadow:none}
+#stepText{font-family:var(--ff-d);font-size:18px;color:var(--ink);min-width:3.2em;text-align:center}
+.dot{cursor:pointer}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);background:var(--surface)}
+.dot.on{background:var(--hot)}
+.dot.done{background:var(--mint-d)}
+
+.guide{display:flex;gap:14px;align-items:flex-start;background:var(--peach);color:#27403d;border:3px solid var(--ink);border-radius:24px;padding:14px 18px;margin-bottom:18px;box-shadow:0 5px 0 var(--ink)}
+.guide .step{flex:none;font-family:var(--ff-d);font-size:18px;background:#fff;border:2px solid #27403d;border-radius:99px;padding:0 14px;white-space:nowrap}
+.guide p{margin:0;font-size:17px;font-weight:500;min-width:0}
+.guide b{background:var(--butter);padding:0 6px;border-radius:6px}
+.guide .next{margin-left:auto;flex:none;font-family:var(--ff-d);font-size:18px;background:var(--mint);color:#27403d;border:2px solid #27403d;border-radius:99px;padding:2px 18px}
+
+.browser{border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:var(--mock-bg);box-shadow:0 6px 0 var(--ink)}
+.chrome{display:flex;align-items:center;gap:10px;background:var(--sky);color:#27403d;padding:10px 14px;border-bottom:3px solid var(--ink)}
+.chrome i{width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #27403d;flex:none}
+.url{flex:1;min-width:0;background:#fff;border:2px solid #27403d;border-radius:99px;padding:1px 14px;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.practice{flex:none;font-size:12px;font-weight:700;background:var(--pink);border:2px solid #27403d;border-radius:99px;padding:0 10px}
+
+.site{color:var(--mock-ink);position:relative}
+.nav{display:flex;align-items:center;gap:20px;padding:14px 24px;background:#fff;border-bottom:1px solid #e3e8ee;flex-wrap:wrap}
+.logo{font-weight:700;font-size:22px;color:#12857a;letter-spacing:-.02em;margin-right:8px}
+.menu{display:flex;gap:18px;font-size:15px;color:#1b2430}
+.menu span{white-space:nowrap}
+.right{margin-left:auto;display:flex;align-items:center;gap:18px;font-size:15px}
+.nav button{border:0;background:none;padding:6px 8px;border-radius:10px;color:#1b2430}
+.nav .signup{background:var(--teal);font-weight:700;border-radius:99px;padding:8px 18px}
+.hero{background:var(--hero);color:var(--hero-ink);padding:44px 24px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.hero h2{font-family:var(--ff-b);font-weight:700;font-size:clamp(32px,5vw,54px);line-height:1.1;letter-spacing:-.02em}
+.hero p{color:var(--hero-sub);font-size:17px;margin:16px 0 22px;max-width:30em}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.cta button{border:0;border-radius:99px;padding:10px 22px;font-weight:700;font-size:15px}
+.cta .a{background:var(--teal);color:#06231f}
+.cta .b{background:#233140;color:var(--teal)}
+.art{position:relative;border:2px dashed #3a4b5c;border-radius:22px;aspect-ratio:5/4;max-width:100%;display:grid;place-items:center;color:#8fa3b5;font-family:monospace;font-size:13px}
+.art .star{font-size:64px;filter:drop-shadow(0 4px 0 rgba(0,0,0,.35))}
+.logos{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;padding:22px 24px;background:#fff;color:#5b6775;font-weight:700;font-size:20px}
+.ask{position:absolute;right:16px;bottom:16px;background:var(--teal);color:#06231f;border:0;border-radius:99px;padding:10px 18px;font-weight:700;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+
+/* target + feedback */
+.target{position:relative}
+.target.hint::after{content:"";position:absolute;inset:-6px;border:3px solid var(--hot);border-radius:99px;animation:pulse 1.2s ease-out infinite;pointer-events:none}
+.target.hint{outline:0}
+.arrow{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:10px;background:var(--hot);color:var(--hot-ink);font-family:var(--ff-d);font-size:16px;padding:2px 14px;border-radius:99px;border:2px solid var(--hot-ink);white-space:nowrap;z-index:3;animation:bob 1s ease-in-out infinite}
+.arrow::before{content:"";position:absolute;left:50%;top:-8px;margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom-color:var(--hot-ink)}
+.target:not(.hint) .arrow{display:none}
+.addbtn.target{border-radius:8px}
+.addbtn.target.hint::after{border-radius:12px}
+@keyframes pulse{0%{transform:scale(.92);opacity:1}100%{transform:scale(1.25);opacity:0}}
+@keyframes bob{50%{transform:translate(-50%,5px)}}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .35s}
+@media (prefers-reduced-motion:reduce){.target.hint::after,.arrow{animation:none}.shake{animation:none}}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 20px;border-radius:99px;font-weight:700;z-index:20;max-width:calc(100% - 32px);text-align:center}
+
+/* github lesson */
+.gh{background:#0d1033;color:#fff;min-height:520px;padding-bottom:40px;background-image:radial-gradient(ellipse at 50% 110%,#5a3fd0 0,transparent 55%)}
+.gnav{display:flex;align-items:center;gap:20px;padding:14px 22px;flex-wrap:wrap}
+.gmark{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;color:#0d1033;font-size:16px}
+.gmark.dk{background:#1f2328;color:#fff;width:30px;height:30px}
+.gmenu{display:flex;gap:18px;font-weight:700;font-size:15px}
+.gmenu span{white-space:nowrap}
+.gright{margin-left:auto;display:flex;gap:10px;align-items:center}
+.gsearch{border:1px solid #3a3f78;border-radius:8px;padding:6px 12px;font-size:14px;font-weight:700;min-width:150px;display:flex;justify-content:space-between;gap:20px}
+.gsearch kbd{border:1px solid #6a70a8;border-radius:5px;padding:0 6px;font-size:12px}
+.gbtn{border:1px solid #3a3f78;background:transparent;color:#fff;border-radius:8px;padding:7px 14px;font-weight:700;font-size:15px}
+.gbtn.su{background:#2a2f66}
+.ghero{text-align:center;padding:90px 20px 40px;max-width:820px;margin:0 auto}
+.ghero h2{font-family:var(--ff-b);font-weight:700;font-size:clamp(34px,6vw,64px);line-height:1.05;letter-spacing:-.03em}
+.ghero p{margin:22px auto 28px;font-size:17px;max-width:34em}
+.gcta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.gemail{display:flex;align-items:center;gap:30px;background:#eef0f4;color:#656d76;border-radius:10px;padding:8px;font-size:16px;padding-left:24px}
+.gemail b{background:#1a8a38;color:#fff;border-radius:8px;padding:11px 20px}
+.gdl{background:#14173d;color:#fff;border:1px solid #fff;border-radius:10px;padding:0 22px;font-weight:700;font-size:16px;min-height:50px}
+.gdash{background:#fff;color:#1f2328;min-height:520px}
+.gtop{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid #d8dee4;flex-wrap:wrap}
+.gmenu2{border:1px solid #d8dee4;border-radius:8px;padding:2px 10px}
+.gdash{position:relative}
+.gdrop{position:absolute;top:56px;right:92px;z-index:8;width:240px;background:#fff;border:1px solid #d8dee4;border-radius:12px;box-shadow:0 8px 24px rgba(31,35,40,.22);padding:8px 0}
+.gdrop hr{border:0;border-top:1px solid #d8dee4;margin:6px 0}
+.dri{position:relative;display:flex;align-items:center;gap:12px;padding:9px 16px;font-size:15px;margin:0 6px;border-radius:8px}
+.dri i{font-style:normal;width:20px;text-align:center;color:#656d76}
+.dri.target.hint{background:#ddf4ff;outline:0}
+.dri.target.hint::after{border-radius:10px;inset:-2px}
+.dri .arrow{top:50%;left:auto;right:-8px;margin:0;transform:translate(100%,-50%);animation:none}
+.dri .arrow::before{left:-8px;top:50%;margin:-6px 0 0;border:6px solid transparent;border-left:0;border-right-color:var(--hot-ink)}
+@media (max-width:700px){.gdrop{right:16px}.dri .arrow{top:100%;right:auto;left:20px;transform:none;margin-top:6px}.dri .arrow::before{display:none}}
+.gform{max-width:720px;margin:0 auto;padding:22px 20px 40px;min-width:0}
+.gform h3{font-family:var(--ff-b);font-weight:700;font-size:24px}
+.gsub{margin:6px 0 18px;color:#59636e;font-size:14.5px}
+.gsub u{color:#0969da}
+.gstep{display:flex;align-items:center;gap:12px;margin:16px 0 12px;font-size:17px}
+.gnum{width:34px;height:34px;border-radius:50%;border:1px solid #d8dee4;display:grid;place-items:center;font-size:14px;color:#59636e;background:#fff}
+.gfield{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.gcol label,.gl{display:block;font-weight:700;font-size:14.5px;margin-bottom:6px}
+.gcol.grow{flex:1;min-width:220px}
+.gowner{border:1px solid #d8dee4;background:#f6f8fa;border-radius:8px;padding:7px 12px;font-size:15px;font-weight:700;display:flex;gap:8px;align-items:center;height:40px}
+.gav.sm{width:22px;height:22px;font-size:11px}
+.gslash{font-size:24px;color:#59636e;padding-bottom:4px}
+.rname{position:relative;border-radius:8px}
+.rname input{width:100%;height:40px;border:1px solid #d0d7de;border-radius:8px;padding:0 12px;font:inherit;font-size:15px;color:#1f2328;background:#fff}
+.rname .arrow.nm2{text-align:center;line-height:1.35;padding:6px 16px;border-radius:16px}
+.rname .arrow.nm2 em{font-style:normal;font-size:14px;color:#fff4ee;display:inline-block;margin-top:2px}
+.impnote{margin:8px 0 0;background:#fff3ec;border:1px solid #ffc9b3;color:#7a2e14;border-radius:8px;padding:8px 12px;font-size:14px;font-weight:700}
+.rname.hint input{border-color:var(--hot)}
+.rname.target.hint::after{border-radius:12px;inset:-5px}
+.gok{color:#1a7f37}
+.ginput{height:40px;border:1px solid #d0d7de;border-radius:8px;background:#fff}
+.gcount{font-size:12.5px;color:#59636e;margin:6px 0 0}
+.gcfg{border:1px solid #d8dee4;border-radius:10px;margin:0 0 14px}
+.grow2{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid #eaeef2;min-width:0}
+.grow2:first-child{border-top:0}
+.grow2 b{display:block;font-size:15px}
+.grow2 small{color:#59636e;font-size:12.5px}
+.gsel{border:1px solid #d0d7de;border-radius:8px;padding:6px 12px;font-weight:700;font-size:14px;white-space:nowrap;box-shadow:0 1px 0 rgba(31,35,40,.04)}
+.gtog{display:flex;align-items:center;gap:8px;font-size:13px}
+.gtog i{width:60px;height:28px;border:1px solid #d0d7de;border-radius:8px;background:#f6f8fa;display:block}
+.gbtnrow{display:flex;justify-content:flex-end;padding-top:6px}
+.gcreate{position:relative;background:#1f883d;color:#fff;border:1px solid #1a7f37;border-radius:8px;padding:9px 16px;font-weight:700;font-size:15px}
+.gcreate.target.hint::after{border-radius:12px;inset:-5px}
+.gcreate .arrow{left:auto;right:0;transform:none;animation:none}
+.gcreate .arrow::before{left:auto;right:30px;margin-left:0}
+.gform{border-left:0}
+.gtabs{display:flex;gap:6px;padding:0 14px;border-bottom:1px solid #d8dee4;overflow-x:auto;font-size:14.5px}
+.gtabs span{padding:10px 12px;white-space:nowrap;color:#1f2328}
+.gtabs .act{border-bottom:2px solid #fd8c73;font-weight:700}
+.grbody{max-width:980px;margin:0 auto;padding:20px 20px 30px;min-width:0}
+.grtitle{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #d8dee4;margin-bottom:18px}
+.grtitle h3{font-family:var(--ff-b);font-weight:500;font-size:24px;overflow-wrap:anywhere}
+.pubb{border:1px solid #d0d7de;border-radius:99px;padding:0 8px;font-size:12px;color:#59636e}
+.gbts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.gbts i{font-style:normal;border:1px solid #d0d7de;border-radius:8px;padding:3px 10px;font-size:13px;font-weight:700;background:#f6f8fa}
+.gcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.gcard{border:1px solid #d8dee4;border-radius:10px;padding:20px}
+.gcard h4{font-size:18px;font-weight:500;margin:0 0 8px}
+.gcard p{margin:0 0 14px;color:#59636e;font-size:14.5px}
+.quick{margin-top:20px;background:#ddf4ff;border:1px solid #b6e3ff;border-radius:10px 10px 0 0;padding:20px}
+.quick h4{font-size:19px;font-weight:500;margin:0 0 14px}
+.qrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.qurl{flex:1;min-width:200px;background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:8px 12px;font-family:monospace;font-size:13px;overflow-wrap:anywhere}
+.qget{margin:16px 0 0;font-size:14px;line-height:2.4}
+.qget u{color:#0969da}
+.ulink{position:relative;border:0;background:none;color:#0969da;text-decoration:underline;font:inherit;padding:0 2px;display:inline;border-radius:4px}
+.ulink.target.hint::after{border-radius:8px;inset:-3px -4px}
+.ulink .arrow{white-space:normal;width:max-content;max-width:230px;text-align:center;line-height:1.35;padding:6px 14px;border-radius:16px;text-decoration:none}
+.cmdl{border:1px solid #d8dee4;border-top:0;border-radius:0 0 10px 10px;padding:20px}
+.cmdl pre{background:#f6f8fa;border-radius:8px;padding:14px;margin:12px 0 0;font-size:13px;overflow-x:auto}
+.crumb2{font-size:20px;margin:0 0 14px;color:#59636e}
+.crumb2 u{color:#0969da;text-decoration:none}
+.dz{border:1px solid #d8dee4;border-radius:10px;text-align:center;padding:70px 20px 80px}
+.dzi{font-size:44px;color:#59636e;line-height:1}
+.dz h3{font-family:var(--ff-b);font-weight:500;font-size:clamp(18px,3vw,26px);margin:12px 0 8px}
+.dz p{margin:0}
+.dz .ulink{text-decoration:none;font-size:16px}
+.cmt{display:flex;gap:14px;margin-top:20px;align-items:flex-start}
+.gav.big{width:50px;height:50px;font-size:18px;flex:none}
+.cmtbox{flex:1;min-width:0;border:1px solid #d8dee4;border-radius:10px;padding:16px}
+.cmtbox h4{margin:0 0 10px;font-size:19px;font-weight:500}
+.cin{border:1px solid #d0d7de;border-radius:8px;padding:9px 12px;color:#59636e;font-size:14.5px;margin-top:10px}
+.cin.tall{height:96px}
+.fchip{display:inline-block;margin:6px 0 12px;border:1px solid #d0d7de;border-radius:8px;background:#f6f8fa;padding:6px 14px;font-size:14px;font-weight:700}
+.cbtns{display:flex;gap:8px;margin-top:10px;padding-left:64px}
+.ccancel{border:1px solid #d0d7de;color:#cf222e;border-radius:8px;padding:9px 16px;font-weight:700;font-size:15px;background:#f6f8fa}
+.livebox{margin:6px 0 18px}
+.lvl{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;border:1px solid #d8dee4;border-radius:10px;padding:16px 18px;background:#fff}
+.lvm{min-width:0;flex:1 1 320px}
+.lvt{font-size:16px;line-height:2.1}
+.lvs{font-size:13px;color:#59636e;margin-top:42px}
+.lvs u{color:#0969da}
+.liveurl{position:relative;border:0;background:#ddf4ff;color:#0550ae;font:inherit;font-weight:700;font-size:clamp(16px,2.6vw,22px);text-decoration:underline;border-radius:8px;padding:3px 10px;overflow-wrap:anywhere;text-align:left}
+.liveurl.target.hint::after{inset:-4px;border-radius:12px}
+.liveurl .arrow{white-space:nowrap}
+.lvb{display:flex;gap:10px;flex-wrap:wrap}
+.gsel.unpub{color:#cf222e;background:#fff}
+.gsel.dis{opacity:.5;cursor:default}
+.lvnote{margin:10px 2px 0;font-size:14px;color:#7a2e14;background:#fff3ec;border:1px solid #ffc9b3;border-radius:8px;padding:8px 12px;font-weight:700}
+.cdin{display:block;width:200px;height:34px;border:1px solid #d0d7de;border-radius:8px;background:#fff}
+.https{margin-top:16px;line-height:1.7}
+.gtab{position:relative;border:0;background:none;font:inherit;padding:10px 12px;white-space:nowrap;color:#1f2328;flex:none}
+.gtab.target.hint::after{inset:4px 2px;border-radius:8px}
+.repogrid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px}
+.rleft,.rright{min-width:0}
+.rtool{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font-size:14px}
+.rmeta{color:#59636e}
+.rfind{flex:1;min-width:120px;border:1px solid #d0d7de;border-radius:8px;padding:6px 12px;color:#59636e}
+.ftab{border:1px solid #d8dee4;border-radius:10px;overflow:hidden;font-size:14px}
+.fhead{display:flex;justify-content:space-between;gap:10px;background:#f6f8fa;padding:12px 14px;border-bottom:1px solid #d8dee4;flex-wrap:wrap}
+.frow{display:grid;grid-template-columns:1.2fr 1.5fr auto;gap:10px;padding:10px 14px}
+.fmsg{color:#59636e}
+.readme{border:1px solid #d8dee4;border-radius:10px;margin-top:18px}
+.rhead{padding:12px 16px;border-bottom:1px solid #d8dee4;font-weight:700;font-size:14px}
+.rbody{text-align:center;padding:36px 16px}
+.rbody h3{font-family:var(--ff-b);font-weight:500;font-size:22px;margin:8px 0 4px}
+.rbody p{margin:0 0 14px;color:#59636e;font-size:14.5px}
+.rright h4{margin:0 0 8px;font-size:17px}
+.rright .ab{color:#59636e;font-size:14.5px;margin:0 0 12px}
+.rright .small{font-size:12.5px}
+.rright .abl{line-height:2.2;font-size:14px;color:#59636e;margin:0}
+.rright hr{border:0;border-top:1px solid #d8dee4;margin:14px 0}
+@media (max-width:700px){.repogrid{grid-template-columns:1fr}.rright{display:none}.frow{grid-template-columns:1fr auto}.fmsg{display:none}}
+.sgrid{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;padding:20px 22px 30px;max-width:1100px;margin:0 auto}
+.snav{min-width:0}
+.snav hr{border:0;border-top:1px solid #d8dee4;margin:10px 0}
+.sh{font-size:13px;color:#59636e;padding:6px 10px;font-weight:700}
+.si{position:relative;display:block;width:100%;text-align:left;border:0;background:none;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;color:#1f2328}
+.si.on{background:#eff1f3;font-weight:700}
+.si.target.hint::after{inset:0;border-radius:10px}
+.smainx{min-width:0}
+.smainx h3{font-family:var(--ff-b);font-weight:500;font-size:28px;padding-bottom:12px;border-bottom:1px solid #d8dee4;margin-bottom:14px}
+.sh2{font-family:var(--ff-b);font-weight:500;font-size:24px;margin:14px 0 8px}
+.sh2.mt2{margin-top:30px}
+.gl.mt{margin-top:18px}
+.brow{display:flex;gap:12px;align-items:flex-start}
+.bwrap{position:relative}
+.gsel{font:inherit;font-size:14px;font-weight:700;color:#1f2328;background:#f6f8fa;cursor:pointer;position:relative}
+.gsel.target.hint::after{border-radius:12px;inset:-4px}
+.ent{font-size:12px;font-weight:700;color:#8250df;border:1px solid #c297ff;border-radius:99px;padding:1px 10px;vertical-align:middle}
+.bdrop{position:absolute;top:calc(100% + 6px);left:0;z-index:9;width:290px;background:#fff;border:1px solid #d0d7de;border-radius:12px;box-shadow:0 8px 24px rgba(31,35,40,.22);padding:12px}
+.bhead{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px}
+.bsearch{border:2px solid #0969da;border-radius:8px;padding:6px 10px;color:#59636e;font-size:14px;margin-bottom:6px}
+.bi{position:relative;display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;font-size:14.5px}
+.bi i{width:16px;font-style:normal}
+.bi.target.hint{background:#ddf4ff}
+.bi.target.hint::after{inset:0;border-radius:10px}
+@media (max-width:700px){.sgrid{grid-template-columns:1fr}.snav{display:none}}
+.gtab.act{border-bottom:2px solid #fd8c73;font-weight:700}
+.agrid{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:460px}
+.anav{border-right:1px solid #d8dee4;padding:16px 14px;min-width:0}
+.anav hr{border:0;border-top:1px solid #d8dee4;margin:14px 0}
+.amain{padding:20px 24px;min-width:0}
+.atitle{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.atitle h3{font-family:var(--ff-b);font-weight:500;font-size:26px;border:0;margin:0;padding:0}
+.actnote{margin:12px 0 14px;background:#fff8e6;border:1px solid #f0d9a0;border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.9}
+.sw{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:middle;margin-right:4px}
+.sw.br{background:#a0722a}.sw.gr{background:#1a7f37}
+.ph{color:#59636e}
+.runs{border:1px solid #d8dee4;border-radius:10px;margin-top:14px;overflow:hidden}
+.rh{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#f6f8fa;padding:12px 14px;border-bottom:1px solid #d8dee4;font-size:14px}
+.rh span{color:#59636e}
+.run{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:12px 14px}
+.rt b{display:block;font-size:16px;overflow-wrap:anywhere}
+.rt small{color:#59636e}
+.rt u{color:#0969da}
+.rb{background:#ddf4ff;color:#0550ae;border-radius:6px;padding:1px 8px;font-family:monospace;font-size:12px}
+.rs{font-size:13px;color:#59636e;display:flex;flex-direction:column;gap:2px}
+.rs em{font-style:italic}
+.spin{width:20px;height:20px;border-radius:50%;border:3px solid #a0722a;border-top-color:transparent;animation:rot 1s linear infinite}
+.spin.ok{border:0;background:#1a7f37;animation:none;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700}
+.spin.ok::before{content:"✓"}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+@media (max-width:700px){.agrid{grid-template-columns:1fr}.anav{display:none}.run{grid-template-columns:auto minmax(0,1fr)}.rb,.rs{display:none}}
+.gpub{background:linear-gradient(160deg,#efe6ff,#fff1ea 60%,#e6f7ee);color:#27403d;min-height:480px}
+.pubwrap{max-width:760px;margin:0 auto;padding:28px 18px 36px;display:grid;gap:18px}
+.pubcard{background:#fff;border-radius:28px;padding:28px 22px;text-align:center;box-shadow:0 6px 20px rgba(120,100,160,.14);min-width:0}
+.pubtop{margin:0 0 10px;font-size:17px;color:#5f7a75}
+.bigurl{font-family:var(--ff-d);font-size:clamp(26px,5.6vw,52px);line-height:1.25;overflow-wrap:anywhere;color:#27403d}
+.bigurl .u1{color:#ff8f6b;background:#fff0e8;border-radius:12px;padding:0 10px}
+.bigurl .u2{color:#2f9d73;background:#e6f7ee;border-radius:12px;padding:0 10px}
+.pubex{margin:14px 0 4px;font-size:16px;color:#5f7a75;overflow-wrap:anywhere}
+.pubex span{font-weight:700;color:#27403d}
+.pubnote{margin:6px 0 0;font-size:15px;color:#5f7a75}
+.pubprev{background:#fff;border-radius:28px;padding:26px 20px;text-align:center;box-shadow:0 6px 20px rgba(120,100,160,.1)}
+.pubprev .blob{font-size:40px}
+.pubprev h3{font-family:var(--ff-d);font-size:28px;margin:4px 0 2px;color:#27403d}
+.pubprev p{margin:0;color:#5f7a75;font-size:14px}
+.pubprev p.done{font-family:var(--ff-d);font-size:26px;color:#2f9d73;margin-top:6px}
+.fxlayer{position:absolute;inset:0;z-index:15;pointer-events:none;overflow:hidden;container-type:inline-size}
+.fxlayer i{position:absolute;width:1cqw;height:1cqw;border-radius:50%;opacity:0;animation:cburst 1.5s ease-out both}
+.fxlayer b{position:absolute;font-size:5cqw;opacity:0;animation:ctwinkle 1.6s ease-out both}
+.fxlayer .thumb{white-space:nowrap;width:max-content;position:absolute;left:50%;top:36%;transform:translate(-50%,-50%);text-align:center;animation:thumbin 3.6s ease-out both}
+.fxlayer .thumb span{display:block;font-size:max(70px,14cqw);line-height:1;filter:drop-shadow(0 .6cqw 0 rgba(74,63,54,.2))}
+.fxlayer .thumb em{display:inline-block;font-style:normal;font-family:var(--ff-d);font-size:max(20px,3.4cqw);color:#fff;background:#ff7f6b;padding:.2cqw 2.2cqw;border-radius:999px;box-shadow:0 .5cqw 0 #d95f4c}
+@keyframes cburst{0%{opacity:1;transform:translate(0,0) scale(1)}70%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.4)}}
+@keyframes ctwinkle{0%{opacity:0;transform:scale(.2) rotate(-20deg)}30%{opacity:1;transform:scale(1.2) rotate(8deg)}100%{opacity:0;transform:scale(1) translateY(-3cqw)}}
+@keyframes thumbin{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-25deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.25) rotate(8deg)}28%{transform:translate(-50%,-50%) scale(1) rotate(0)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-56%) scale(1)}}
+@media (prefers-reduced-motion:reduce){.fxlayer i,.fxlayer b{animation:none}}
+.urlhl{background:#1a73e8;color:#fff!important;border-radius:6px!important}
+.gico{position:relative;border:1px solid #d8dee4;border-radius:8px;padding:3px 10px;font-size:14px;color:#33404d}
+.gplus{font-weight:700}
+.gplus.target.hint::after{border-radius:12px;inset:-4px}
+.gplus .arrow{left:auto;right:-6px;transform:none;animation:none}
+.gplus .arrow::before{left:auto;right:22px;margin-left:0}
+.gsearch2{margin-left:auto;border:1px solid #d8dee4;border-radius:8px;padding:5px 14px;color:#656d76;font-size:14px}
+.gav{width:34px;height:34px;border-radius:50%;background:#7fdcc3;display:grid;place-items:center;font-weight:700;color:#134}
+.gbody{display:grid;grid-template-columns:230px 1fr}
+.gside{border-right:1px solid #d8dee4;padding:16px;min-width:0}
+.gi{padding:7px 10px;border-radius:8px;font-size:15px;overflow-wrap:anywhere}
+.gi.act{background:#eff1f3;font-weight:700}
+.gside hr{border:0;border-top:1px solid #d8dee4;margin:12px 0}
+.gh3{font-size:13px;color:#656d76;font-weight:700;padding:4px 10px}
+.gmainp{padding:22px 28px 30px;min-width:0}
+.gmainp h3{font-family:var(--ff-b);font-weight:700;font-size:26px;margin-bottom:14px}
+.gask{border:1px solid #d8dee4;border-radius:12px;padding:16px;color:#656d76}
+.gask p{margin:0 0 26px}
+.gar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;color:#1f2328}
+.gchips{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 24px}
+.gchips span{border:1px solid #d8dee4;border-radius:8px;padding:6px 14px;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.gsec{display:flex;justify-content:space-between;margin:16px 0 8px;font-size:14px}
+.gsec u{color:#0969da;text-decoration:none}
+.gempty{border:1px solid #d8dee4;border-radius:10px;padding:18px 16px;color:#656d76;font-size:14px}
+@media (max-width:700px){.gmenu{display:none}.gbody{grid-template-columns:1fr}.gside{display:none}}
+
+/* final: success */
+.browser{position:relative}
+.win{position:absolute;inset:0;z-index:15;display:grid;place-items:center;background:rgba(39,64,61,.55);overflow:hidden;padding:16px}
+.wincard{position:relative;z-index:2;background:var(--surface);color:var(--ink);border:3px solid var(--ink);border-radius:28px;box-shadow:0 6px 0 var(--ink);padding:26px 28px;text-align:center;max-width:460px}
+.wincard .big{font-size:46px;line-height:1.2}
+.wincard h2{font-size:clamp(28px,5vw,38px);color:var(--hot);margin:6px 0 8px}
+.wincard p{margin:0 0 16px;color:var(--muted)}
+.wrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.wrow button{font-family:var(--ff-d);font-size:18px;border:2px solid var(--ink);border-radius:99px;padding:3px 20px;background:var(--mint);color:#27403d}
+.wrow button:last-child{background:var(--surface);color:var(--ink)}
+.burst{position:absolute;left:50%;top:45%;width:0;height:0;z-index:1}
+.burst span{position:absolute;font-size:30px;opacity:0;animation:fly 1.6s ease-out forwards}
+@keyframes fly{0%{transform:translate(0,0) scale(.3);opacity:1}80%{opacity:1}100%{transform:translate(var(--x),var(--y)) scale(1.1);opacity:0}}
+@media (prefers-reduced-motion:reduce){.burst span{animation:none;opacity:0}}
+
+/* screen 4: project ready */
+.proj4{display:grid;grid-template-columns:64px 1fr;background:#fff;color:#1b2430;min-height:560px}
+.p4body{min-width:0}
+.crumb{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid #e3e8ee;font-size:15px;color:#667585;flex-wrap:wrap}
+.crumb b{color:#1b2430;font-weight:500}
+.crumb .sw{border:1px solid #e3e8ee;border-radius:8px;padding:2px 8px}
+.tr{margin-left:auto;font-size:14px;color:#33404d}
+.subbar{display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #e3e8ee;font-size:15px;flex-wrap:wrap}
+.pub{background:#c9f5d6;color:#146b3a;border-radius:6px;padding:2px 10px;font-size:14px}
+.subbar u{color:#1b2430}
+.split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:440px}
+.left{padding:12px 20px 16px;border-right:1px solid #e3e8ee;display:flex;flex-direction:column;gap:16px;min-width:0}
+.donetab span{display:inline-block;border:1px solid #1b2430;border-radius:8px;padding:2px 10px;font-size:14px;background:#fff}
+.ready{background:#eefaf3;border:1px solid #d3eedd;border-radius:10px;padding:22px 22px 18px;position:relative}
+.ready h3{font-family:var(--ff-b);font-weight:700;font-size:21px}
+.ready p{margin:12px 0 0;font-size:15px}
+.ready .star{position:absolute;right:26px;top:18px;font-size:44px;color:#f7a93b;filter:drop-shadow(0 3px 0 rgba(0,0,0,.12))}
+.urlbox{position:relative;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e3e8ee;border-radius:8px;padding:12px;margin-top:14px;min-width:0}
+.urlbox .u{color:#0f8a7e;font-weight:700;font-size:15px;overflow-wrap:anywhere;min-width:0;flex:1}
+.urlbox .ib{border:1px solid #d5dce4;border-radius:6px;width:34px;height:30px;display:grid;place-items:center;flex:none;color:#33404d}
+.urlbox.target.hint::after{border-radius:12px;inset:-5px}
+.urlbox.hint{box-shadow:0 0 0 3px var(--hot)}
+.ready .vis{color:#667585;font-size:14px;margin-top:20px}
+.ready .vis a{color:#0f8a7e}
+.chatin{margin-top:auto;border:1px solid #d5dce4;border-radius:10px;padding:12px;font-size:14px;color:#667585}
+.crow{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:#33404d;flex-wrap:wrap}
+.rpane{display:flex;flex-direction:column;min-width:0}
+.pbar{margin:10px auto;background:#f3f6f8;border-radius:8px;padding:6px 14px;font-size:14px;color:#667585;width:min(520px,90%)}
+.preview{flex:1;background:linear-gradient(160deg,#efe6ff,#fff1ea 60%,#e6f7ee);padding:20px;display:grid;place-items:center}
+.pcard{background:#fff;border-radius:28px;padding:30px 24px;text-align:center;width:min(440px,100%);box-shadow:0 6px 20px rgba(120,100,160,.12)}
+.pcard .blob{font-size:44px}
+.pcard h3{font-family:var(--ff-d);font-size:32px;margin-top:6px;color:#27403d}
+.pcard p{margin:6px 0 0;font-size:14px;color:#667585}
+@media (max-width:700px){.proj4{grid-template-columns:1fr}.proj4 .rail{display:none}.split{grid-template-columns:1fr}.left{border-right:0}.tr{margin-left:0}}
+
+/* screen 3: create project */
+.start{display:grid;grid-template-columns:64px 1fr;background:#fff;color:#1b2430;min-height:520px}
+.rail{border-right:1px solid #e3e8ee;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 0}
+.rail .logo{margin:0;font-size:20px;color:#12b5a6;letter-spacing:-.05em}
+.starter{font-size:14px;color:#667585;margin:12px 0 0;line-height:1.9}
+.starter u{color:#33404d}
+.drop::after{content:"";display:block}
+.ric{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;color:#667585}
+.smain{padding:24px 28px 40px;min-width:0;max-width:760px}
+.smain h3{font-family:var(--ff-b);font-weight:700;font-size:clamp(24px,4vw,32px);margin-bottom:22px}
+.smain h4{font-size:17px;margin:20px 0 10px;font-weight:700}
+.credit{font-size:12px;font-weight:500;background:#c9f5d6;color:#146b3a;border-radius:6px;padding:1px 8px;margin-left:6px}
+.agent{background:#f3f6f8;border-radius:14px;padding:10px}
+.prompt{background:#fff;border:1px solid #e3e8ee;border-radius:10px;padding:14px;color:#667585;font-size:15px}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding:0 4px;font-size:14px;color:#33404d;flex-wrap:wrap}
+.bn{background:#a9b4bf;color:#fff;border-radius:8px;padding:6px 14px;font-weight:700}
+.divider{text-align:center;color:#667585;font-size:14px;margin:22px 0 0}
+.git5{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.git5 span{border:1px solid #c9d2dc;border-radius:6px;padding:9px 6px;text-align:center;font-size:14px}
+.drop{border:1px dashed #d5dce4;border-radius:14px;padding:18px 20px;font-size:15px}
+.drop p{margin:0}
+.drop .small{font-size:13px;color:#667585;margin-top:20px;line-height:2.6}
+.lnk{border:0;background:#d6f5f1;color:#0d5f57;text-decoration:underline;font:inherit;padding:0 3px;border-radius:4px;display:inline-block}
+.lnk.target.hint::after{border-radius:8px;inset:-3px}
+.drop .arrow{font-size:14px}
+@media (max-width:700px){.start{grid-template-columns:1fr}.rail{display:none}}
+
+/* screen 2: projects dashboard */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:480px;background:#fff;color:#1b2430;position:relative}
+.side{border-right:1px solid #e3e8ee;padding:16px 12px;display:flex;flex-direction:column;gap:6px;background:#fff;min-width:0}
+.side .sbox{border:1px solid #dfe5ec;border-radius:10px;padding:8px 12px;color:#667585;font-size:14px;display:flex;justify-content:space-between}
+.side .team{display:flex;align-items:center;gap:8px;padding:10px 6px;font-size:15px;min-width:0}
+.side .team i{width:24px;height:24px;border-radius:6px;background:#6aa4ff;color:#fff;font-style:normal;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+.side button.item{border:0;background:none;text-align:left;padding:9px 10px;border-radius:10px;font-size:15px;color:#33404d}
+.side button.item.act{background:#eef3f2;font-weight:700;color:#0d6b62}
+.side .grow{flex:1}
+.side .upg{background:#e7ecfb;color:#3a4fb5;border-radius:8px;padding:8px;text-align:center;font-size:14px}
+.side .me{font-size:13px;color:#5b6775;padding:8px 6px}
+.main{padding:20px 24px;min-width:0}
+.main h3{font-family:var(--ff-b);font-weight:700;font-size:24px}
+.panel{border:1px solid #e3e8ee;border-radius:14px;margin-top:14px;padding:16px}
+.prow{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.psearch{flex:1;min-width:160px;max-width:420px;border:1px solid #c9d2dc;border-radius:8px;padding:8px 12px;color:#667585;font-size:14px}
+.addbtn{border:0;background:var(--teal);color:#06231f;font-weight:700;font-size:15px;border-radius:8px;padding:10px 18px}
+.filters{display:flex;gap:14px;flex-wrap:wrap;color:#667585;font-size:13px;margin:12px 0 10px;padding-bottom:12px;border-bottom:1px solid #e3e8ee}
+.proj{display:flex;gap:14px;align-items:center;padding:12px 4px;border-top:1px solid #eef1f5;min-width:0}
+.thumb{width:72px;height:46px;border-radius:6px;flex:none;background:linear-gradient(135deg,#ffd9e6,#cfe8ff);border:1px solid #e3e8ee}
+.thumb.t2{background:linear-gradient(135deg,#f4ecd8,#e9e2cf)}
+.slogo{display:flex;justify-content:space-between;align-items:center;padding:2px 6px 10px}
+.nlogo{color:#12b5a6;font-weight:700;font-size:20px;letter-spacing:-.05em}
+.side .team em{margin-left:auto;font-style:normal;color:#667585}
+.side .team{background:none}
+.side button.item u{text-decoration:none;display:inline-block;width:26px;color:#0d8a7e}
+.side .me{display:flex;gap:10px;align-items:center}
+.side .me small{color:#667585}
+.av{width:36px;height:36px;border-radius:50%;background:#e8404f;color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.mtop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tr{font-size:14px;color:#33404d}
+.filters .chip{background:#eef1f4;color:#33404d;border-radius:6px;padding:3px 10px}
+.filters .sort{margin-left:auto;border:1px solid #c9d2dc;border-radius:8px;padding:4px 10px;color:#33404d}
+.filters .vt{display:inline-flex;border:1px solid #c9d2dc;border-radius:8px;overflow:hidden}
+.filters .vt i{font-style:normal;padding:3px 9px;color:#33404d}
+.filters .vt i:first-child{background:#eef1f4}
+.filters u{text-decoration:none;color:#1b2430}
+.proj b em{font-style:normal;color:#1aa05b;font-weight:400}
+.chev{margin-left:8px;color:#667585;white-space:nowrap}
+.proj b{font-size:15px;display:block;overflow-wrap:anywhere}
+.proj span{font-size:13px;color:#667585}
+.proj .meta{margin-left:auto;text-align:right;min-width:0}
+
+@media (max-width:700px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .menu{display:none}
+  .hero{grid-template-columns:1fr}
+  .nav{gap:8px;padding:12px 14px}
+  .right{gap:6px}
+  .guide{flex-wrap:wrap}
+  .guide .next{margin-left:0}
+  .steps{margin-left:0;width:100%}
+}
+</style>
+
+<div class="wrap">
+
+<!-- HOME -->
+<section id="home">
+  <div class="home-head">
+    <h1>배포 시뮬레이션</h1>
+    <p>선생님들과 함께 따라 해보는 클릭 연습이에요. 먼저 하고 싶은 걸 골라주세요.</p>
+  </div>
+  <div class="pick">
+    <button class="card net" id="goNet">
+      <span class="face">N</span>
+      <span class="tag">STEP A</span>
+      <h2>네트리파이</h2>
+      <p>만든 웹앱을 인터넷에 올려서 링크로 공유하기</p>
+      <span class="go">시작하기 →</span>
+    </button>
+    <button class="card git" id="goGit">
+      <span class="face">G</span>
+      <span class="tag">STEP B</span>
+      <h2>깃허브</h2>
+      <p>코드를 저장소에 업로드하기</p>
+      <span class="go">시작하기 →</span>
+    </button>
+  </div>
+  <p class="note">실제 사이트가 아니라 연습용 화면이라서 마음껏 눌러봐도 안전해요.</p>
+</section>
+
+<!-- LESSON: GITHUB -->
+<section id="lessonGit" hidden>
+  <div class="bar">
+    <button class="back" id="gback">← 처음으로</button>
+    <h1>깃허브 연습</h1>
+    <div class="steps" aria-label="진행 상황"><button class="arr" id="gprev" aria-label="이전 단계">◀</button><span id="gstepText">1단계</span><button class="arr" id="gnxt" aria-label="다음 단계">▶</button><span class="dot on" id="g1"></span><span class="dot" id="g2"></span><span class="dot" id="g3"></span><span class="dot" id="g4"></span><span class="dot" id="g5"></span><span class="dot" id="g6"></span><span class="dot" id="g7"></span><span class="dot" id="g8"></span><span class="dot" id="g9"></span><span class="dot" id="g10"></span><span class="dot" id="g11"></span><span class="dot" id="g12"></span><span class="dot" id="g13"></span><span class="dot" id="g14"></span><span class="dot" id="g15"></span><span class="dot" id="g16"></span><span class="dot" id="g17"></span></div>
+  </div>
+
+  <div class="guide">
+    <span class="step" id="gstepBadge">1단계</span>
+    <p id="gguideText">깃허브 첫 화면이에요. 오른쪽 위의 <b>Sign in</b>을 눌러볼까요?</p>
+  </div>
+
+  <div class="browser">
+    <div class="chrome"><i></i><i></i><i></i><span class="url" id="gurl">github.com</span><span class="practice">연습 화면</span></div>
+
+    <div class="site gh" id="gsite">
+      <div class="gnav">
+        <span class="gmark">●</span>
+        <div class="gmenu"><span>Platform ▾</span><span>Solutions ▾</span><span>Resources ▾</span><span>Open Source ▾</span><span>Enterprise ▾</span><span>Pricing</span></div>
+        <div class="gright">
+          <span class="gsearch wrong">Search <kbd>/</kbd></span>
+          <button class="gbtn target hint" id="signIn">Sign in<span class="arrow">여기 클릭!</span></button>
+          <button class="gbtn su wrong">Sign up</button>
+        </div>
+      </div>
+      <div class="ghero">
+        <h2>The future of building happens together</h2>
+        <p>Tools and trends evolve, but collaboration endures. With GitHub, developers, agents, and code come together on one platform.</p>
+        <div class="gcta">
+          <div class="gemail wrong"><span>Enter your email</span><b>Sign up for GitHub</b></div>
+          <button class="gdl wrong">Download GitHub Copilot app</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="site gdash" id="gdash" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><b>Dashboard</b><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">◍ ▾</span><span class="gico gplus target hint" id="plusBtn">+ ▾<span class="arrow">여기 클릭!</span></span><span class="gico wrong">◎</span><span class="gico wrong">⇄</span><span class="gico wrong">▯</span><span class="gico wrong">✉</span><span class="gav">유</span></div>
+      <div class="gdrop" id="gmenu" hidden>
+        <div class="dri wrong"><i>◎</i>New issue</div>
+        <div class="dri target hint" id="newRepo"><i>▯</i>New repository<span class="arrow">여기 클릭!</span></div>
+        <div class="dri wrong"><i>⇪</i>Import repository</div>
+        <hr>
+        <div class="dri wrong"><i>▭</i>New codespace</div>
+        <div class="dri wrong"><i>&lt;&gt;</i>New gist</div>
+        <hr>
+        <div class="dri wrong"><i>▥</i>New organization</div>
+        <div class="dri wrong"><i>▦</i>New project</div>
+      </div>
+      <div class="gbody">
+        <div class="gside">
+          <div class="gi act wrong">⌂ Home</div>
+          <div class="gi wrong">◍ Feed</div>
+          <hr>
+          <div class="gh3">Top repositories</div>
+          <div class="gi wrong">◔ my-id/science</div>
+          <div class="gi wrong">◔ my-id/mineral</div>
+          <div class="gi wrong">◔ my-id/stem</div>
+          <div class="gi wrong">◔ my-id/sample-app</div>
+        </div>
+        <div class="gmainp">
+          <h3>Good afternoon!</h3>
+          <div class="gask wrong"><p>Ask anything or type @ to add context</p><div class="gar"><span>Ask ▾ &nbsp; All repositories ▾</span><span>Auto ▾</span></div></div>
+          <div class="gchips"><span class="wrong">Debug</span><span class="wrong">Agent</span><span class="wrong">Create issue</span><span class="wrong">Write code ▾</span><span class="wrong">Git ▾</span><span class="wrong">Pull requests ▾</span></div>
+          <div class="gsec"><b>Pull requests</b><u>View all</u></div>
+          <div class="gempty">No pull requests found, try a different filter.</div>
+          <div class="gsec"><b>Issues</b><u>View all</u></div>
+          <div class="gempty">No issues found, try a different filter.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site gdash gnew" id="gnew" hidden>
+      <div class="gform">
+        <p class="gsub">Repositories contain a project's files and version history. Have a project elsewhere? <u>Import a repository</u>.<br><i>Required fields are marked with an asterisk (*).</i></p>
+        <div class="gstep"><span class="gnum">1</span><b>General</b></div>
+        <div class="gfield">
+          <div class="gcol"><label>Owner *</label><div class="gowner wrong"><span class="gav sm">유</span> my-id ▾</div></div>
+          <span class="gslash">/</span>
+          <div class="gcol grow"><label for="repoName">Repository name *</label>
+            <div class="rname target hint" id="rnameWrap"><input id="repoName" type="text" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Repository name"><span class="arrow nm2">여기에 저장소 이름을 쓰세요!<br><em>중요: 저장소 이름이 웹 주소가 됩니다</em></span></div>
+          </div>
+        </div>
+        <p class="impnote" id="impNote" hidden>중요: 저장소 이름이 웹 주소가 됩니다</p>
+        <p class="gsub">Great repository names are short and memorable. How about <b class="gok">urban-meme</b>?</p>
+        <label class="gl">Description</label>
+        <div class="ginput wrong"></div>
+        <p class="gcount">0 / 350 characters</p>
+        <div class="gstep"><span class="gnum">2</span><b>Configuration</b></div>
+        <div class="gcfg">
+          <div class="grow2 wrong"><div><b>Choose visibility *</b><small>Choose who can see and commit to this repository</small></div><span class="gsel">Public ▾</span></div>
+        </div>
+        <div class="gcfg">
+          <div class="grow2 wrong"><div><b>Add README</b><small>READMEs can be used as longer descriptions. <u>About READMEs</u></small></div><span class="gtog">Off <i></i></span></div>
+          <div class="grow2 wrong"><div><b>Add .gitignore</b><small>.gitignore tells git which files not to track. <u>About ignoring files</u></small></div><span class="gsel">No .gitignore ▾</span></div>
+          <div class="grow2 wrong"><div><b>Add license</b><small>Licenses explain how others can use your code. <u>About licenses</u></small></div><span class="gsel">No license ▾</span></div>
+        </div>
+        <div class="gbtnrow"><button class="gcreate target" id="createRepo">Create repository<span class="arrow">여기 클릭!</span></button></div>
+      </div>
+    </div>
+
+    <div class="site gdash grepo" id="grepo" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><span>my-id / <b class="rn">my-repo</b> ▾</span><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">+ ▾</span><span class="gico wrong">◎</span><span class="gav">유</span></div>
+      <div class="gtabs"><span class="act">&lt;&gt; Code</span><span class="wrong">Issues</span><span class="wrong">Pull requests</span><span class="wrong">Agents</span><span class="wrong">Actions</span><span class="wrong">Projects</span><span class="wrong">Wiki</span><span class="wrong">Security and quality</span><span class="wrong">Insights</span><span class="wrong">Settings</span></div>
+      <div class="grbody">
+        <div class="grtitle"><span class="gav sm">유</span><h3 class="rn">my-repo</h3><span class="pubb">Public</span><span class="gbts"><i class="wrong">Pin</i><i class="wrong">Watch 0 ▾</i><i class="wrong">Fork 0</i><i class="wrong">☆ Star 0 ▾</i></span></div>
+        <div class="gcards">
+          <div class="gcard wrong"><h4>Start coding with Codespaces</h4><p>Add a README file and start coding in a secure, configurable, and dedicated development environment.</p><span class="gsel">Create a codespace</span></div>
+          <div class="gcard wrong"><h4>Add collaborators to this repository</h4><p>Search for people using their GitHub username or email address.</p><span class="gsel">Invite collaborators</span></div>
+        </div>
+        <div class="quick">
+          <h4>Quick setup — if you've done this kind of thing before</h4>
+          <div class="qrow"><span class="gsel wrong">Set up in GitHub Desktop</span><b>or</b><span class="gsel wrong">HTTPS &nbsp; SSH</span><span class="qurl wrong">https://github.com/my-id/<span class="rn">my-repo</span>.git</span></div>
+          <p class="qget">Get started by <u class="wrong">creating a new file</u> or <button class="ulink target hint up" id="uploadLink">uploading an existing file</button>. We recommend every repository include a <u>README</u>, <u>LICENSE</u>, and <u>.gitignore</u>.</p>
+        </div>
+        <div class="cmdl wrong"><b>...or create a new repository on the command line</b><pre>echo "# my-repo" &gt;&gt; README.md
+git init
+git add README.md
+git commit -m "first commit"</pre></div>
+      </div>
+    </div>
+
+    <div class="site gdash gup" id="gup" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><span>my-id / <b class="rn">my-repo</b> ▾</span><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">+ ▾</span><span class="gico wrong">◎</span><span class="gav">유</span></div>
+      <div class="gtabs"><span class="act">&lt;&gt; Code</span><span class="wrong">Issues</span><span class="wrong">Pull requests</span><span class="wrong">Agents</span><span class="wrong">Actions</span><span class="wrong">Projects</span><span class="wrong">Wiki</span><span class="wrong">Security and quality</span><span class="wrong">Insights</span><span class="wrong">Settings</span></div>
+      <div class="grbody">
+        <p class="crumb2"><u class="rn">my-repo</u> /</p>
+        <div class="dz">
+          <div class="dzi" aria-hidden="true">🗎</div>
+          <h3>Drag files here to add them to your repository</h3>
+          <div class="fchip" id="fchip" hidden>🗎 index.html</div>
+          <p>Or <button class="ulink target hint" id="chooseFiles">choose your files<span class="arrow">파일명을 index.html으로 할 것</span></button></p>
+        </div>
+        <div class="cmt">
+          <span class="gav big">유</span>
+          <div class="cmtbox wrong">
+            <h4>Commit changes</h4>
+            <div class="cin">Add files via upload</div>
+            <div class="cin tall">Add an optional extended description…</div>
+          </div>
+        </div>
+        <div class="cbtns"><button class="gcreate target" id="commitBtn">Commit changes<span class="arrow">여기 클릭!</span></button><span class="ccancel wrong">Cancel</span></div>
+      </div>
+    </div>
+
+    <div class="site gdash gdone" id="gdone" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><span>my-id / <b class="rn">my-repo</b> ▾</span><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">+ ▾</span><span class="gico wrong">◎</span><span class="gav">유</span></div>
+      <div class="gtabs"><span class="act">&lt;&gt; Code</span><span class="wrong">Issues</span><span class="wrong">Pull requests</span><span class="wrong">Agents</span><span class="wrong">Actions</span><span class="wrong">Projects</span><span class="wrong">Wiki</span><span class="wrong">Security and quality</span><span class="wrong">Insights</span><button class="gtab target hint" id="settingsTab">⚙ Settings</button></div>
+      <div class="grbody">
+        <div class="grtitle"><span class="gav sm">유</span><h3 class="rn">my-repo</h3><span class="pubb">Public</span><span class="gbts"><i class="wrong">Pin</i><i class="wrong">Watch 0 ▾</i><i class="wrong">Fork 0</i><i class="wrong">☆ Star 0 ▾</i></span></div>
+        <div class="repogrid">
+          <div class="rleft">
+            <div class="rtool"><span class="gsel wrong">⎇ main ▾</span><span class="rmeta wrong"><b>1</b> Branch &nbsp; <b>0</b> Tags</span><span class="rfind wrong">⌕ Go to file</span><span class="gsel wrong">Add file ▾</span><span class="gcreate wrong">&lt;&gt; Code ▾</span></div>
+            <div class="ftab wrong">
+              <div class="fhead"><span><span class="gav sm">유</span> <b>my-id</b> Add files via upload</span><span>1 Commit</span></div>
+              <div class="frow"><span>🗎 index.html</span><span class="fmsg">Add files via upload</span><span>now</span></div>
+            </div>
+            <div class="readme wrong"><div class="rhead">README</div><div class="rbody"><div class="dzi">📖</div><h3>Add a README</h3><p>Help people interested in this repository understand your project.</p><span class="gcreate">Add a README</span></div></div>
+          </div>
+          <div class="rright wrong">
+            <h4>About</h4>
+            <p class="ab"><i>No description, website, or topics provided.</i></p>
+            <p class="abl">⌇ Activity<br>☆ 0 stars<br>◉ 0 watching<br>⑂ 0 forks</p>
+            <hr><h4>Releases</h4><p class="ab small">No releases published</p>
+            <hr><h4>Packages</h4><p class="ab small">No packages published</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site gdash gset" id="gset" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><span>my-id / <b class="rn">my-repo</b> ▾</span><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">+ ▾</span><span class="gico wrong">◎</span><span class="gav">유</span></div>
+      <div class="gtabs"><span class="wrong">&lt;&gt; Code</span><span class="wrong">Issues</span><span class="wrong">Pull requests</span><span class="wrong">Agents</span><span class="wrong">Actions</span><span class="wrong">Projects</span><span class="wrong">Wiki</span><span class="wrong">Security and quality</span><span class="wrong">Insights</span><span class="act">⚙ Settings</span></div>
+      <div class="sgrid">
+        <nav class="snav">
+          <div class="si wrong" id="siGeneral">⚙ General</div>
+          <hr>
+          <div class="sh">Access</div>
+          <div class="si wrong">Collaborators</div>
+          <div class="si wrong">Moderation ▾</div>
+          <hr>
+          <div class="sh">Code, planning, and automation</div>
+          <div class="si wrong">Rulesets ▾</div>
+          <div class="si wrong">Branches</div>
+          <div class="si wrong">Tags</div>
+          <div class="si wrong">Actions ▾</div>
+          <div class="si wrong">Webhooks</div>
+          <div class="si wrong">Copilot ▾</div>
+          <div class="si wrong">Planning ▾</div>
+          <div class="si wrong">Environments</div>
+          <div class="si wrong">Codespaces</div>
+          <button class="si target hint" id="pagesItem">▤ Pages</button>
+          <hr>
+          <div class="sh">Security and quality</div>
+          <div class="si wrong">Advanced Security</div>
+        </nav>
+        <div class="smainx">
+          <div id="setGeneral">
+            <h3>General</h3>
+            <label class="gl">Repository name</label>
+            <div class="ginput wrong"><span class="rn sv">my-repo</span></div>
+            <p class="gsub">Template repository · Default branch <b>main</b> · Features · Pull Requests</p>
+          </div>
+          <div id="setPages" hidden>
+            <h3>GitHub Pages</h3>
+            <p class="gsub"><u>GitHub Pages</u> is designed to host your personal, organization, or project pages from a GitHub repository.</p>
+            <div class="livebox" id="liveBox" hidden>
+              <div class="lvl">
+                <div class="lvm">
+                  <div class="lvt">Your site is live at <button class="liveurl target" id="liveUrlBtn"><span id="liveUrlTxt"></span><span class="arrow">이 주소를 눌러 복사하세요!</span></button></div>
+                  <div class="lvs">Last deployed by <u>my-id</u> just now</div>
+                </div>
+                <div class="lvb"><button class="gsel" id="visitBtn">↗ Visit site</button><button class="gsel unpub" id="unpubBtn">Unpublish site</button></div>
+              </div>
+              <p class="lvnote">아이디를 몰라도 여기에서 내 웹앱 주소를 바로 볼 수 있어요.</p>
+            </div>
+            <h2 class="sh2">Build and deployment</h2>
+            <label class="gl">Source</label>
+            <span class="gsel wrong">Deploy from a branch ▾</span>
+            <label class="gl mt">Branch</label>
+            <p class="gsub" id="brText"></p>
+            <div class="brow">
+              <div class="bwrap">
+                <button class="gsel target hint" id="noneBtn">None ▾</button>
+                <div class="bdrop" id="bdrop" hidden>
+                  <div class="bhead"><b>Select branch</b><span>✕</span></div>
+                  <div class="bsearch wrong">⌕ |</div>
+                  <div class="bi target hint" id="mainItem"><i></i>main</div>
+                  <div class="bi wrong"><i>✓</i>None</div>
+                </div>
+              </div>
+              <span class="gsel wrong" id="rootBtn" hidden>▮ / (root) ▾</span>
+              <button class="gsel target" id="saveBtn">Save</button>
+            </div>
+            <p class="gsub" id="lastDep" hidden>Your site was last deployed to the <u>github-pages</u> environment by the <u>pages build and deployment</u> workflow.</p>
+            <div id="liveMore" hidden>
+              <h2 class="sh2 mt2">Custom domain</h2>
+              <p class="gsub">Custom domains allow you to serve your site from a domain other than <code>my-id.github.io</code>. <u>Learn more about configuring custom domains</u>.</p>
+              <div class="brow"><span class="ginput cdin wrong"></span><span class="gsel dis">Save</span><span class="gsel dis">Remove</span></div>
+              <p class="gsub https">☑ <b>Enforce HTTPS</b><br>Required for your site because you are using the default domain (my-id.github.io)</p>
+            </div>
+            <h2 class="sh2 mt2">Visibility <span class="ent">GitHub Enterprise</span></h2>
+            <p class="gsub">With a GitHub Enterprise account, you can restrict access to your GitHub Pages site by publishing it privately.</p>
+            <span class="gsel wrong">Start free for 30 days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site gdash gact" id="gact" hidden>
+      <div class="gtop"><span class="gmenu2 wrong">☰</span><span class="gmark dk">●</span><span>my-id / <b class="rn">my-repo</b> ▾</span><span class="gsearch2 wrong">⌕ Type / to search</span><span class="gico wrong">+ ▾</span><span class="gico wrong">◎</span><span class="gav">유</span></div>
+      <div class="gtabs"><span>&lt;&gt; Code</span><span>Issues</span><span>Pull requests</span><span>Agents</span><button class="gtab target hint act" id="actionsTab" tabindex="-1">▶ Actions</button><span>Projects</span><span>Wiki</span><span>Security and quality</span><span>Insights</span><button class="gtab target" id="settingsTab2">⚙ Settings</button></div>
+      <div class="agrid">
+        <nav class="anav">
+          <div class="si on">⌂ All workflows</div>
+          <div class="sh">Workflows</div>
+          <div class="si">pages-build-deployment</div>
+          <hr>
+          <div class="si">Caches</div><div class="si">Attestations ↗</div><div class="si">Runners</div><div class="si">Lockfile ↗</div><div class="si">Usage metrics ↗</div><div class="si">Performance metrics ↗</div>
+        </nav>
+        <div class="amain">
+          <div class="atitle"><h3>All workflows</h3><span class="gsel">New workflow</span></div>
+          <p class="gsub">Showing runs from all workflows</p>
+          <div class="actnote" id="actnote"><span class="sw br"></span><b>Actions</b>에서 업로드 상태를 볼 수 있어요. <span class="sw br"></span><b>갈색</b>은 업로드 중, <span class="sw gr"></span><b>초록</b>은 완료!</div>
+          <div class="ginput"><span class="ph">Search runs</span></div>
+          <div class="runs">
+            <div class="rh"><b>1 workflow run</b><span>Workflow ▾ &nbsp; Event ▾ &nbsp; Status ▾ &nbsp; Branch ▾ &nbsp; Actor ▾</span></div>
+            <div class="run">
+              <span class="spin" id="runIcon" aria-label="진행 중"></span>
+              <div class="rt"><b>pages build and deployment</b><small>pages-build-deployment #1: by <u>my-id</u></small></div>
+              <span class="rb">main</span>
+              <div class="rs"><span id="runWhen">▭ now</span><em id="runDur">In progress</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site gpub" id="gpub" hidden>
+      <div class="pubwrap">
+        <div class="pubcard">
+          <p class="pubtop">내 웹앱 주소는 이렇게 만들어져요</p>
+          <div class="bigurl"><span class="u1">자기아이디</span>.github.io/<span class="u2">저장소주소</span></div>
+          <p class="pubex">예) <span id="pubEx">my-id.github.io/my-repo/</span></p>
+          <p class="pubnote">주소창의 이 주소를 복사해서 선생님들께 공유하세요.</p>
+        </div>
+        <div class="pubprev"><div class="blob">☁</div><h3>내가 올린 웹앱</h3><p class="done">배포 완료</p></div>
+      </div>
+    </div>
+    <div class="fxlayer" id="gwin" hidden aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- LESSON: NETLIFY -->
+<section id="lesson" hidden>
+  <div class="bar">
+    <button class="back" id="back">← 처음으로</button>
+    <h1>네트리파이 연습</h1>
+    <div class="steps" aria-label="진행 상황"><button class="arr" id="prev" aria-label="이전 단계">◀</button><span id="stepText">1단계</span><button class="arr" id="nxt" aria-label="다음 단계">▶</button><span class="dot on" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span></div>
+  </div>
+
+  <div class="guide" id="guide">
+    <span class="step">1단계</span>
+    <p id="guideText">네트리파이 첫 화면이에요. 오른쪽 위의 <b>Log in</b>을 눌러볼까요?</p>
+  </div>
+
+  <div class="browser">
+    <div class="chrome"><i></i><i></i><i></i><span class="url" id="url">netlify.com</span><span class="practice">연습 화면</span></div>
+    <div class="site" id="site">
+      <div class="nav">
+        <span class="logo">netlify</span>
+        <div class="menu"><span>Platform ▾</span><span>Solutions ▾</span><span>Developers ▾</span><span>Resources ▾</span><span>Pricing</span></div>
+        <div class="right">
+          <button class="wrong">Contact</button>
+          <button class="target hint" id="login">Log in<span class="arrow" id="arrow">여기 클릭!</span></button>
+          <button class="signup wrong">Sign up</button>
+        </div>
+      </div>
+      <div class="hero">
+        <div>
+          <h2>Push your ideas to the web</h2>
+          <p>Create with AI or code, deploy instantly on production infrastructure. One platform to build and ship.</p>
+          <div class="cta"><button class="a wrong">Start building</button><button class="b wrong">Request a demo</button></div>
+        </div>
+        <div class="art" aria-hidden="true"><span class="star">★</span><span>Drop here</span></div>
+      </div>
+      <div class="logos" aria-hidden="true"><span>Meta</span><span>mighty</span><span>FINN</span><span>AUTODESK</span><span>zscaler</span></div>
+      <button class="ask wrong">Ask Netlify</button>
+    </div>
+
+    <div class="site start" id="screen3" hidden>
+      <div class="rail"><span class="logo">-n-</span><span class="wrong ric">▯</span><span class="wrong ric">⌕</span><span class="wrong ric" style="background:#6aa4ff;color:#fff;font-weight:700">o</span></div>
+      <div class="smain">
+        <h3>Let's create your new project</h3>
+        <h4>Start building with an AI agent <span class="credit">400 Extra Credits</span></h4>
+        <div class="agent wrong">
+          <div class="prompt">Describe your idea. The agent codes and configures for you.</div>
+          <div class="arow"><span>Claude Agent (Auto) ▾</span><span class="bn">Build now</span></div>
+        </div>
+        <p class="starter wrong">Not sure where to start? Try modifying a ready-made starter prompt:<br><u>Marketing site</u> &nbsp;<u>Personal portfolio</u> &nbsp;<u>E-commerce store</u> &nbsp;<u>Travel site</u> &nbsp;<u>Internal dashboard</u> &nbsp;<u>Habit tracker</u></p>
+        <div class="divider"><span>Bringing your own code?</span></div>
+        <h4>Import a Git repository</h4>
+        <div class="git5"><span class="wrong">GitHub</span><span class="wrong">GitLab</span><span class="wrong">Cursor Origin</span><span class="wrong">Bitbucket</span><span class="wrong">Azure DevOps</span></div>
+        <h4>Upload your project files</h4>
+        <div class="drop">
+          <p>Drop a project folder, zip file, or HTML file to deploy instantly.</p>
+          <p class="small">Or <button class="lnk target hint" id="upFile">browse files to upload<span class="arrow">파일이 하나일 때</span></button> or <button class="lnk target hint" id="upFolder">choose a folder<span class="arrow">파일이 많을 때 (폴더 전체)</span></button>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="site proj4" id="screen4" hidden>
+      <div class="rail"><span class="logo">-n-</span><span class="wrong ric">▯</span><span class="wrong ric">⌕</span><span class="wrong ric" style="background:#6aa4ff;color:#fff;font-weight:700">o</span><span class="wrong ric">▤</span><span class="wrong ric">⚒</span><span class="wrong ric">▥</span><span class="wrong ric">⚙</span></div>
+      <div class="p4body">
+        <div class="crumb"><span>Projects</span> / <b>sample-site-123abc</b> <span class="sw">⇅</span> / <span>Agent runs ↺</span><span class="tr">📢 News &nbsp; ⓘ Support</span></div>
+        <div class="subbar"><b>Dropped files</b> <span class="pub">● Published ▾</span><span class="tr">Based on <u>Dropped files</u></span></div>
+        <div class="split">
+          <div class="left">
+            <div class="donetab"><span>Done</span></div>
+            <div class="ready">
+              <div class="rtxt"><h3>Your project is ready!</h3><p>Your site is available at</p></div>
+              <div class="star" aria-hidden="true">★</div>
+              <div class="urlbox target hint" id="urlBox"><span class="u">https://sample-site-123abc.netlify.app</span><span class="ib wrong">⧉</span><span class="ib wrong">⇪</span><span class="arrow">이 주소를 복사해서 배포하세요!</span></div>
+              <p class="vis">Want new projects to start private?<br><a class="wrong">Change the default visibility in Team settings →</a></p>
+            </div>
+            <div class="chatin wrong"><span>Ask an agent to create a new page, build a dashboard, update an article, etc. Review, iterate and share.</span><div class="crow"><span>＋ &nbsp; Claude Agent (Auto) ▾</span><span>Build ▾ &nbsp; 🎙 &nbsp; ↑</span></div></div>
+          </div>
+          <div class="rpane">
+            <div class="pbar wrong">⌂ &nbsp; ↻ &nbsp; /</div>
+            <div class="preview"><div class="pcard"><div class="blob">☁</div><h3>내가 올린 웹앱</h3><p>여기에 업로드한 파일의 미리보기가 보여요</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="win" id="win" hidden>
+      <div class="burst" id="burst" aria-hidden="true"></div>
+      <div class="wincard">
+        <div class="big" aria-hidden="true">🎆🎉🎆</div>
+        <h2>성공! 배포되었습니다.</h2>
+        <p>복사한 주소를 선생님들께 공유하면 누구나 내 웹앱을 열 수 있어요.</p>
+        <div class="wrow"><button id="winClose">화면 보기</button><button id="winHome">처음으로</button></div>
+      </div>
+    </div>
+
+    <div class="site app" id="screen2" hidden>
+      <div class="side">
+        <div class="slogo"><span class="nlogo">-n-</span><span class="ric">▯</span></div>
+        <div class="sbox wrong" role="button" tabindex="0"><span>⌕ Search...</span><span>Ctrl K</span></div>
+        <div class="team wrong"><i>o</i><span>내 팀</span><em>⇅</em></div>
+        <button class="item act wrong"><u>▰</u>Projects</button>
+        <button class="item wrong"><u>⚒</u>Builds</button>
+        <button class="item wrong"><u>▤</u>Usage &amp; billing</button>
+        <button class="item wrong"><u>⚙</u>Team settings</button>
+        <button class="item wrong"><u>✎</u>Visual editor dashboard</button>
+        <div class="grow"></div>
+        <div class="upg">Upgrade</div>
+        <div class="me"><span class="av">유</span><span>내 계정<br><small>example@email.com</small></span></div>
+      </div>
+      <div class="main">
+        <div class="mtop"><h3>Projects</h3><span class="tr">📢 News &nbsp;&nbsp; ⓘ Support</span></div>
+        <div class="panel">
+          <div class="prow">
+            <div class="psearch wrong">Search projects</div>
+            <button class="addbtn target hint" id="addNew">Add new project<span class="arrow">여기 클릭!</span></button>
+          </div>
+          <div class="filters"><span>Owned by <u>This team</u></span><span>Created by <u>Anyone</u></span><span>Access <u>Any</u></span><span class="chip">Edit filters</span><span class="sort wrong">☰ Last published ▾</span><span class="vt"><i>☰</i><i>▦</i></span></div>
+          <div class="proj"><div class="thumb t1"></div><div><b>sample-project-111111 <em>⊕</em></b><span>Last deployed from Netlify Drop</span></div><div class="meta"><span>Owned by <strong>내 팀</strong><br>Published at 4:00 PM</span></div><span class="chev">☆ &nbsp; ›</span></div>
+          <div class="proj"><div class="thumb t2"></div><div><b>sample-project-222222 <em>⊕</em></b><span>Last deployed from Netlify Drop</span></div><div class="meta"><span>Owned by <strong>내 팀</strong><br>Published on Oct 15</span></div><span class="chev">☆ &nbsp; ›</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var home=$('#home'), lesson=$('#lesson'), toastEl=$('#toast'), tt;
+  function toast(msg){
+    toastEl.textContent=msg; toastEl.hidden=false; clearTimeout(tt);
+    tt=setTimeout(function(){toastEl.hidden=true},2200);
+  }
+  function show(which){
+    home.hidden = which!=='home'; lesson.hidden = which!=='lesson'; $('#lessonGit').hidden = which!=='git';
+    window.scrollTo(0,0);
+  }
+  var GUIDE={
+    1:'네트리파이 첫 화면이에요. 오른쪽 위의 <b>Log in</b>을 눌러볼까요?',
+    2:'로그인하면 Projects 화면이 나와요. 위쪽의 <b>Add new project</b>를 눌러주세요.',
+    3:'파일이 <b>하나</b>면 <b>browse files to upload</b>, 파일이 <b>많으면</b> <b>choose a folder</b>로 폴더 전체를 올려요. 하나를 눌러보세요.',
+    4:'배포가 끝났어요! 아래 <b>초록색 주소</b>를 눌러 복사해서 선생님들께 공유하세요.',
+    5:'주소를 복사했어요. 이 주소가 인터넷에서 내 웹앱을 여는 링크예요.'
+  };
+  var URLS={1:'netlify.com',2:'app.netlify.com/teams/내팀/projects',3:'app.netlify.com/start',4:'app.netlify.com/projects/sample-site-123abc/agent-runs/new',5:'app.netlify.com/projects/sample-site-123abc/agent-runs/new'};
+  var cur=1;
+  function setStep(n){
+    cur=n; $('#prev').disabled=(n===1); $('#nxt').disabled=(n===5);
+    $('#site').hidden=(n!==1); $('#screen2').hidden=(n!==2); $('#screen3').hidden=(n!==3); $('#screen4').hidden=(n<4);
+    $('#addNew').classList.toggle('hint',n===2);
+    ['#upFile','#upFolder'].forEach(function(s){$(s).classList.toggle('hint',n===3)});
+    $('#urlBox').classList.toggle('hint',n===4);
+    $('#win').hidden=(n!==5); if(n===5) celebrate();
+    for(var i=1;i<=5;i++){ $('#d'+i).className = i<n?'dot done':(i===n?'dot on':'dot'); }
+    $('#stepText').textContent=n+'단계';
+    $('#guide').querySelector('.step').textContent=n+'단계';
+    $('#url').textContent=URLS[n];
+    $('#guideText').innerHTML=GUIDE[n];
+  }
+  function reset(){setStep(1)}
+  $('#goNet').onclick=function(){reset();show('lesson')};
+  $('#goGit').onclick=function(){gSet(1); show('git')};
+  var gcur=1, runT;
+  function gSet(n){
+    gcur=n;
+    var nm=($('#repoName').value||'').trim()||'my-repo';
+    var inSet=((n>=10&&n<=13)||n===15||n===16);
+    var onP=(n===10||n===15);
+    var pgs=((n>=11&&n<=13)||n===16);
+    $('#gsite').hidden=(n!==1); $('#gdash').hidden=(n===1||n>=4); $('#gnew').hidden=(n<4||n>=6); $('#grepo').hidden=(n!==6); $('#gup').hidden=(n<7||n>=9); $('#gdone').hidden=(n<9||n>=10); $('#gset').hidden=!inSet; $('#gact').hidden=(n!==14); $('#gpub').hidden=(n<17);
+    $('#gurl').classList.toggle('urlhl',n===17);
+    document.querySelectorAll('.rn').forEach(function(e){e.textContent=nm});
+    $('#pubEx').textContent='my-id.github.io/'+nm+'/';
+    $('#liveUrlTxt').textContent='https://my-id.github.io/'+nm+'/';
+    clearTimeout(runT);
+    $('#runIcon').className='spin'; $('#runWhen').textContent='▭ now'; $('#runDur').textContent='In progress'; $('#settingsTab2').classList.remove('hint'); $('#actionsTab').classList.toggle('hint',n===14);
+    $('#gwin').hidden=(n!==17); if(n===17) fireFx();
+    if(n===14){ runT=setTimeout(function(){
+      $('#runIcon').className='spin ok'; $('#runWhen').textContent='▭ 2 minutes ago'; $('#runDur').textContent='41s';
+      $('#settingsTab2').classList.add('hint'); $('#actionsTab').classList.remove('hint');
+      $('#gguideText').innerHTML='초록 체크가 떴어요! 배포가 끝났어요. 이제 위쪽 <b>Settings</b>를 눌러 내 웹앱 주소를 찾아봐요.';
+    },4500); }
+    $('#pagesItem').classList.toggle('hint',onP); $('#pagesItem').classList.toggle('on',pgs); $('#siGeneral').classList.toggle('on',onP);
+    $('#setGeneral').hidden=!onP; $('#setPages').hidden=!pgs;
+    $('#noneBtn').textContent=(n>=13)?'⎇ main ▾':'None ▾'; $('#rootBtn').hidden=(n<13);
+    $('#saveBtn').classList.toggle('hint',n===13); $('#saveBtn').classList.toggle('dis',n===16);
+    $('#noneBtn').classList.toggle('hint',n===11); $('#bdrop').hidden=(n!==12); $('#mainItem').classList.toggle('hint',n===12);
+    $('#brText').innerHTML = n===16
+      ? 'Your GitHub Pages site is currently being built from the <code>main</code> branch. <u>Learn more about configuring the publishing source for your site</u>.'
+      : 'GitHub Pages is currently disabled. Select a source below to enable GitHub Pages for this repository. <u>Learn more about configuring the publishing source for your site</u>.';
+    $('#liveBox').hidden=(n!==16); $('#lastDep').hidden=(n!==16); $('#liveMore').hidden=(n!==16); $('#liveUrlBtn').classList.toggle('hint',n===16);
+    $('#settingsTab').classList.toggle('hint',n===9); $('#chooseFiles').classList.toggle('hint',n===7); $('#commitBtn').classList.toggle('hint',n===8); $('#fchip').hidden=(n<8); $('#uploadLink').classList.toggle('hint',n===6);
+    $('#rnameWrap').classList.toggle('hint',n===4); $('#impNote').hidden=(n!==5); $('#createRepo').classList.toggle('hint',n===5);
+    $('#signIn').classList.toggle('hint',n===1);
+    $('#plusBtn').classList.toggle('hint',n===2);
+    $('#gmenu').hidden=(n!==3); $('#newRepo').classList.toggle('hint',n===3);
+    $('#gprev').disabled=(n===1); $('#gnxt').disabled=(n===17);
+    for(var i=1;i<=17;i++){ $('#g'+i).className = i<n?'dot done':(i===n?'dot on':'dot'); }
+    $('#gstepText').textContent=n+'단계'; $('#gstepBadge').textContent=n+'단계';
+    var u;
+    if(n===1) u='github.com';
+    else if(n>=17) u='my-id.github.io/'+nm+'/';
+    else if(pgs) u='github.com/my-id/'+nm+'/settings/pages';
+    else if(n===14) u='github.com/my-id/'+nm+'/actions';
+    else if(onP) u='github.com/my-id/'+nm+'/settings';
+    else if(n>=9) u='github.com/my-id/'+nm;
+    else if(n>=7) u='github.com/my-id/'+nm+'/upload';
+    else if(n>=6) u='github.com/my-id/'+nm;
+    else if(n>=4) u='github.com/new';
+    else u='github.com (로그인 후)';
+    $('#gurl').textContent=u;
+    var G={
+      1:'깃허브 첫 화면이에요. 오른쪽 위의 <b>Sign in</b>을 눌러볼까요?',
+      2:'로그인하면 내 Dashboard가 나와요. 오른쪽 위의 <b>+</b> 버튼을 눌러주세요.',
+      3:'메뉴가 열렸어요. <b>New repository</b>를 눌러 새 저장소를 만들어요.',
+      4:'저장소 이름을 정하는 화면이에요. <b>아이디 옆 칸</b>에 저장소 이름을 써보세요. <b>중요: 저장소 이름이 웹 주소가 됩니다.</b>',
+      5:'이름을 입력했어요! <b>중요: 저장소 이름이 웹 주소가 됩니다.</b> 이제 아래쪽 초록색 <b>Create repository</b> 버튼을 눌러주세요.',
+      6:'저장소가 만들어졌어요! <b>uploading an existing file</b>을 눌러 파일을 올려요. 파일 이름은 꼭 <b>index.html</b>이어야 해요.',
+      7:'<b>choose your files</b>를 눌러 파일을 골라요. 파일 이름은 꼭 <b>index.html</b>로 해주세요.',
+      8:'파일을 골랐어요. 이제 아래쪽 초록색 <b>Commit changes</b> 버튼을 눌러주세요.',
+      9:'파일이 올라갔어요! <b>index.html</b>이 보이죠? 이제 위쪽의 <b>Settings</b> 탭을 눌러주세요.',
+      10:'Settings가 열렸어요. 왼쪽 메뉴에서 <b>Pages</b>를 눌러주세요.',
+      11:'<b>None</b> 버튼을 눌러 브랜치를 골라요.',
+      12:'목록에서 <b>main</b>을 선택해요.',
+      13:'<b>main</b>이 선택됐어요. 이제 <b>Save</b> 버튼을 눌러주세요.',
+      14:'<b>Actions</b>에서 업로드 상태를 볼 수 있어요. <b>갈색</b>은 업로드 중, <b>초록</b>은 완료!',
+      15:'Settings가 열렸어요. 이번에도 왼쪽 메뉴에서 <b>Pages</b>를 눌러주세요.',
+      16:'여기에서 내 웹앱 주소를 바로 볼 수 있어요. <b>Your site is live at</b> 옆의 주소를 눌러 복사하세요. 아이디를 몰라도 돼요!',
+      17:'다 끝났어요! 내 웹앱 주소는 <b>자기아이디.github.io/저장소주소</b>예요. 이 주소를 복사해서 공유하세요.'
+    };
+    $('#gguideText').innerHTML=G[n];
+  }
+  $('#gback').onclick=function(){show('home')};
+  $('#gprev').onclick=function(){if(gcur>1)gSet(gcur-1)};
+  $('#gnxt').onclick=function(){if(gcur<17)gSet(gcur+1)};
+  $('#g1').onclick=function(){gSet(1)}; $('#g2').onclick=function(){gSet(2)}; $('#g3').onclick=function(){gSet(3)}; $('#g4').onclick=function(){gSet(4)}; $('#g5').onclick=function(){gSet(5)}; $('#g6').onclick=function(){gSet(6)}; $('#g7').onclick=function(){gSet(7)}; $('#g8').onclick=function(){gSet(8)}; $('#g9').onclick=function(){gSet(9)}; $('#g10').onclick=function(){gSet(10)};
+  $('#g14').onclick=function(){gSet(14)}; $('#g15').onclick=function(){gSet(15)}; $('#g16').onclick=function(){gSet(16)}; $('#g17').onclick=function(){gSet(17)};
+  $('#settingsTab2').onclick=function(){ if(this.classList.contains('hint')) gSet(15); };
+  function pickAddr(){ if(gcur!==16) return; try{navigator.clipboard.writeText('https://my-id.github.io/'+(($('#repoName').value||'').trim()||'my-repo')+'/').catch(function(){})}catch(e){} gSet(17); toast('주소를 복사했어요'); }
+  $('#liveUrlBtn').onclick=pickAddr; $('#visitBtn').onclick=pickAddr;
+  $('#unpubBtn').onclick=function(){ toast('이 버튼은 사이트를 내려요. 누르지 않아요!'); };
+  $('#saveBtn').onclick=function(){ if(this.classList.contains('hint')) gSet(14); };
+  [11,12,13].forEach(function(i){ $('#g'+i).onclick=function(){gSet(i)}; });
+  $('#pagesItem').onclick=function(){ if(!this.classList.contains('hint')) return; gSet(gcur===15?16:11); };
+  $('#noneBtn').onclick=function(){ if(this.classList.contains('hint')) gSet(12); };
+  $('#mainItem').onclick=function(){ if(this.classList.contains('hint')) gSet(13); };
+  $('#settingsTab').onclick=function(){ if(this.classList.contains('hint')) gSet(10); };
+  $('#commitBtn').onclick=function(){ if(this.classList.contains('hint')) gSet(9); };
+  $('#chooseFiles').onclick=function(){ if(this.classList.contains('hint')) gSet(8); };
+  $('#uploadLink').onclick=function(){ if(this.classList.contains('hint')) gSet(7); };
+  $('#createRepo').onclick=function(){ if(this.classList.contains('hint')) gSet(6); };
+  $('#repoName').addEventListener('input',function(){
+    if(gcur===4 && this.value.trim().length>0) gSet(5);
+    else if(gcur===5 && this.value.trim().length===0) gSet(4);
+  });
+  $('#newRepo').onclick=function(){ if(this.classList.contains('hint')) gSet(4); };
+  $('#signIn').onclick=function(){gSet(2)};
+  $('#plusBtn').onclick=function(){ if(this.classList.contains('hint')) gSet(3); };
+  $('#back').onclick=function(){show('home')};
+
+  document.querySelectorAll('.wrong').forEach(function(b){
+    b.onclick=function(){
+      var s=b.closest('.site'); s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake');
+      toast(s.id==='screen2' ? '거긴 아니에요. 위쪽 Add new project를 눌러주세요'
+        : s.id==='screen3' ? '거긴 아니에요. 아래 browse files / choose a folder 중 하나를 눌러주세요'
+        : s.id==='screen4' ? '초록색 주소를 눌러 복사해 보세요'
+        : s.id==='gsite' ? '거긴 아니에요. 오른쪽 위 Sign in을 눌러주세요'
+        : s.id==='gact' ? '초록색이 되면 위쪽 Settings를 눌러주세요'
+        : s.id==='gset' ? ((gcur===10||gcur===15) ? '거긴 아니에요. 왼쪽 메뉴의 Pages를 눌러주세요' : gcur===16 ? '내 웹앱 주소를 눌러 복사해 보세요' : gcur===11 ? '거긴 아니에요. None 버튼을 눌러주세요' : gcur===13 ? '거긴 아니에요. Save 버튼을 눌러주세요' : '거긴 아니에요. 목록에서 main을 눌러주세요')
+        : s.id==='gdone' ? '거긴 아니에요. 위쪽 Settings 탭을 눌러주세요'
+        : s.id==='gup' ? (gcur===8 ? '거긴 아니에요. 초록색 Commit changes 버튼을 눌러주세요' : '거긴 아니에요. choose your files를 눌러주세요')
+        : s.id==='grepo' ? '거긴 아니에요. uploading an existing file 링크를 눌러주세요'
+        : s.id==='gnew' ? (gcur===5 ? '거긴 아니에요. 초록색 Create repository 버튼을 눌러주세요' : '거긴 아니에요. 아이디 옆 칸에 저장소 이름을 써보세요')
+        : s.id==='gdash' ? (gcur===3 ? '거긴 아니에요. New repository를 눌러주세요' : '거긴 아니에요. 오른쪽 위 + 버튼을 눌러주세요') : '거긴 아니에요. 오른쪽 위 Log in을 눌러주세요');
+    };
+  });
+  $('#prev').onclick=function(){if(cur>1)setStep(cur-1)};
+  $('#nxt').onclick=function(){if(cur<5)setStep(cur+1)};
+  [1,2,3,4,5].forEach(function(i){ $('#d'+i).onclick=function(){setStep(i)}; });
+  $('#login').onclick=function(){setStep(2)};
+  $('#addNew').onclick=function(){setStep(3)};
+  $('#upFile').onclick=function(){setStep(4)};
+  $('#upFolder').onclick=function(){setStep(4)};
+  $('#urlBox').onclick=function(){
+    if(this.classList.contains('hint')){
+      try{navigator.clipboard.writeText('https://sample-site-123abc.netlify.app').catch(function(){})}catch(e){}
+      setStep(5); toast('주소를 복사했어요');
+    }
+  };
+  function fireFx(){
+    var L=$('#gwin'); L.innerHTML='';
+    var cols=['#FF7F6B','#FFC94A','#4FB488','#6CB8E8','#F59BC0','#B79AE8'];
+    for(var k=0;k<5;k++){
+      var cx=12+k*19+(Math.random()*6-3), cy=22+(k%2)*22+Math.random()*8, dl=(k*.28).toFixed(2);
+      for(var i=0;i<14;i++){
+        var an=i/14*Math.PI*2, r=9+Math.random()*6, d=document.createElement('i');
+        d.style.cssText='left:'+cx+'%;top:'+cy+'%;background:'+cols[(i+k)%cols.length]+';--dx:'+(Math.cos(an)*r).toFixed(1)+'cqw;--dy:'+(Math.sin(an)*r).toFixed(1)+'cqw;animation-delay:'+dl+'s';
+        L.appendChild(d);
+      }
+    }
+    ['🎆','🎉','✨','🎊','🎇'].forEach(function(e,j){
+      var t=document.createElement('b'); t.textContent=e;
+      t.style.cssText='left:'+(8+j*20)+'%;top:'+(10+(j%2)*55)+'%;animation-delay:'+(j*.2)+'s'; L.appendChild(t);
+    });
+    var th=document.createElement('div'); th.className='thumb'; th.innerHTML='<span>👍</span><em>배포 완료!</em>'; L.appendChild(th);
+  }
+  function celebrate(b){
+    b=b||$('#burst'); b.innerHTML='';
+    var em=['🎆','🎇','🎉','✨','🎊','⭐'];
+    for(var i=0;i<26;i++){
+      var s=document.createElement('span'), a=Math.random()*Math.PI*2, r=120+Math.random()*190;
+      s.textContent=em[i%em.length];
+      s.style.setProperty('--x',Math.round(Math.cos(a)*r*1.4)+'px');
+      s.style.setProperty('--y',Math.round(Math.sin(a)*r)+'px');
+      s.style.animationDelay=(Math.random()*.5)+'s';
+      b.appendChild(s);
+    }
+  }
+  $('#winClose').onclick=function(){$('#win').hidden=true};
+  $('#winHome').onclick=function(){$('#win').hidden=true; reset(); show('home')};
+})();
+</script>
+
+</body></html>
