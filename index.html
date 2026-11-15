@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>배포 시뮬레이션</title>
+<title>바이브코딩 시뮬레이션</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -489,6 +489,195 @@ button{font:inherit;color:inherit;cursor:pointer}
   .guide .next{margin-left:0}
   .steps{margin-left:0;width:100%}
 }
+/* apps script lesson */
+.card.gas{background:var(--pink)}
+.uw{flex:1;min-width:0;position:relative;display:flex}
+.uw .url{flex:1}
+.rect.target.hint::after{border-radius:10px;inset:-4px}
+.arrow.up{top:auto;bottom:100%;margin-top:0;margin-bottom:10px;animation:bobu 1s ease-in-out infinite}
+.arrow.up::before{top:auto;bottom:-8px;border:6px solid transparent;border-bottom:0;border-top-color:var(--hot-ink)}
+.arrow.sd{top:50%;left:100%;margin:0 0 0 14px;transform:translateY(-50%);animation:bobs 1s ease-in-out infinite}
+.arrow.sd::before{top:50%;left:-8px;margin:-6px 0 0;border:6px solid transparent;border-left:0;border-right-color:var(--hot-ink)}
+.arrow.mid{top:50%;margin-top:0}
+.arrow.mid::before{display:none}
+@keyframes bobu{50%{transform:translate(-50%,-5px)}}
+@keyframes bobs{50%{transform:translate(5px,-50%)}}
+@media (prefers-reduced-motion:reduce){.arrow.up,.arrow.sd{animation:none}}
+.as{position:relative;background:#fff;color:#202124;min-height:560px;font-size:14px;overflow:hidden}
+.as .xw{cursor:pointer}
+/* sheets */
+.sh-top{display:flex;align-items:flex-start;gap:12px;padding:12px 16px 4px}
+.sh-ic{width:34px;height:42px;border-radius:6px;background:#1e8e3e;color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
+.sh-title{font-size:18px;margin:0 0 2px}
+.sh-menu{display:flex;gap:16px;font-size:13.5px;flex-wrap:wrap;position:relative}
+.sh-menu>span,.mwrap>span.target{padding:2px 4px;border-radius:6px;white-space:nowrap}
+.mwrap{position:relative}
+.sh-r{margin-left:auto;display:flex;gap:10px;align-items:center}
+.sh-share{background:#c2e7ff;border-radius:99px;padding:6px 16px;font-weight:500}
+.av{width:30px;height:30px;border-radius:50%;background:#f4511e;color:#fff;display:grid;place-items:center;font-size:12px}
+.sh-tool{margin:8px 16px;background:#edf2fa;border-radius:99px;height:38px;display:flex;align-items:center;gap:20px;padding:0 18px;color:#444;font-size:15px}
+.sh-grid{display:grid;grid-template-columns:44px repeat(8,minmax(0,1fr));font-size:12px;color:#5f6368;margin:0 0 0 0}
+.sh-grid div{border-right:1px solid #e1e3e6;border-bottom:1px solid #e1e3e6;height:26px;display:grid;place-items:center}
+.sh-grid .h{background:#f8f9fa}
+.sh-grid .sel{outline:2px solid #1a73e8;outline-offset:-2px;background:#fff}
+.sh-ext{position:absolute;left:-10px;top:100%;margin-top:6px;width:290px;background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.28);padding:6px 0;z-index:6;font-size:14px}
+.sh-ext div{padding:9px 16px;display:flex;justify-content:space-between;position:relative;white-space:nowrap}
+.sh-ext hr{border:0;border-top:1px solid #dadce0;margin:4px 0}
+.sh-tabs{position:absolute;left:0;right:0;bottom:0;background:#f8f9fa;border-top:1px solid #dadce0;padding:8px 16px;display:flex;gap:18px;align-items:center;color:#444}
+.sh-tabs b{background:#e1e9f7;color:#0b57d0;padding:6px 14px;border-radius:6px;font-weight:500}
+/* gemini */
+.gm{background:#f8fafd;min-height:560px}
+.gm-top{display:flex;align-items:center;gap:14px;padding:14px 20px;font-size:20px}
+.gm-top b{font-family:var(--ff-d);font-weight:400;font-size:24px}
+.gm-hi{text-align:center;font-family:var(--ff-d);font-size:clamp(26px,4.4vw,40px);margin:34px 0 20px;background:linear-gradient(90deg,#4285f4,#9b72cb,#d96570);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gm-in{margin:0 auto;max-width:760px;background:#fff;border:1px solid #dadce0;border-radius:28px;padding:16px 18px 12px;box-shadow:0 2px 8px rgba(60,64,67,.15)}
+.gm-in p{margin:0;line-height:1.7;font-size:14.5px;max-height:176px;overflow:hidden;position:relative}
+.gm-in p::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:linear-gradient(transparent,#fff)}
+.gm-in .hl{background:var(--butter);padding:0 4px;border-radius:5px}
+.gm-bar{display:flex;align-items:center;gap:12px;margin-top:10px;color:#5f6368}
+.gm-send{margin-left:auto;width:40px;height:40px;border-radius:50%;background:#1a73e8;color:#fff;border:0;display:grid;place-items:center;font-size:18px;position:relative}
+.gm-chat{max-width:760px;margin:0 auto;padding:10px 18px 24px;display:grid;gap:14px}
+.gm-me{justify-self:end;background:#e9eef6;border-radius:20px;padding:10px 16px;max-width:80%;font-size:14px}
+.gm-ai{display:grid;gap:12px}
+.gm-ai>p{margin:0}
+.cb{border-radius:14px;overflow:hidden;background:#1e1f20;color:#e3e3e3}
+.cb-h{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#2d2f31;font-size:13px}
+.cb-h button{border:0;background:#3b3d3f;color:#e3e3e3;border-radius:99px;padding:3px 14px;font-size:13px;position:relative}
+.cb pre{margin:0;padding:10px 14px;font:12.5px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:#c9d1d9;max-height:96px;overflow:hidden}
+/* editor */
+.ed{background:#fff;min-height:600px}
+.ed-top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #e1e3e6}
+.ed-logo{font-size:20px;color:#4285f4}
+.ed-top b{font-size:19px;font-weight:500}
+.ed-name{font-size:17px;margin-left:12px}
+.ed-dep{margin-left:auto;background:#1a73e8;color:#fff;border-radius:6px;padding:9px 18px;font-weight:500;position:relative}
+.ed-body{display:grid;grid-template-columns:46px 220px minmax(0,1fr);min-height:540px;position:relative}
+.ed-rail{display:flex;flex-direction:column;gap:20px;align-items:center;padding-top:16px;border-right:1px solid #e1e3e6;color:#5f6368;font-size:18px}
+.ed-files{border-right:1px solid #e1e3e6;font-size:14px;position:relative}
+.ed-files .row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid #e1e3e6}
+.ed-files .f{padding:9px 16px;position:relative}
+.ed-files .f.on{background:#d3e3fd;border-left:4px solid #0b57d0;padding-left:12px;font-weight:500}
+.ed-files .plus{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:20px;position:relative}
+.ed-files .plus.on{background:#e1e3e6}
+.fmenu{position:absolute;left:150px;top:34px;width:150px;background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.28);padding:6px 0;z-index:4;font-size:14px}
+.fmenu div{padding:8px 16px;position:relative;white-space:nowrap}
+.ed-main{display:flex;flex-direction:column;min-width:0}
+.ed-tool{display:flex;gap:16px;align-items:center;padding:10px 16px;border-bottom:1px solid #e1e3e6;color:#80868b;font-size:13.5px;flex-wrap:wrap}
+.ed-tool .on{color:#202124;font-weight:500}
+.ed-code{flex:1;position:relative;padding:16px 8px;font:13px/1.65 ui-monospace,Menlo,Consolas,monospace;min-height:380px}
+.ed-code pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;color:#1f2328}
+.ed-code .kw{color:#1a56db}.ed-code .st{color:#b45309}.ed-code .ln{color:#80868b;display:inline-block;width:2.4em}
+.depm{position:absolute;right:14px;top:2px;width:190px;background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.3);padding:6px 0;z-index:7;font-size:14.5px}
+.depm div{padding:11px 20px;position:relative;white-space:nowrap}
+.ovl{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:5}
+.dlg{position:absolute;z-index:6;left:50%;top:26px;transform:translateX(-50%);width:min(860px,94%);background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);color:#202124}
+.dlg h4{margin:0;padding:18px 28px;font-size:20px;font-weight:500}
+.dlg-b{border-top:1px solid #dadce0;display:grid;grid-template-columns:240px minmax(0,1fr);min-height:330px}
+.dlg-l{border-right:1px solid #dadce0;padding:14px 12px;font-size:14px;position:relative}
+.dlg-l .gear{width:34px;height:34px;border-radius:50%;background:#e8eaed;display:grid;place-items:center;float:right;position:relative}
+.dlg-r{padding:16px 22px;position:relative;min-width:0}
+.dlg-f{border-top:1px solid #dadce0;padding:14px 22px;display:flex;justify-content:flex-end;gap:12px}
+.dlg-f .b{border:1px solid #dadce0;border-radius:6px;padding:9px 20px;color:#1a73e8;font-weight:500;position:relative;background:#fff}
+.dlg-f .b.blue{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.dlg-f .b.gray{background:#e8eaed;color:#9aa0a6;border-color:#e8eaed}
+.tlist{position:absolute;left:62px;top:56px;width:230px;background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.3);padding:6px 0;z-index:3}
+.tlist div{padding:10px 22px;position:relative;white-space:nowrap}
+.fld{border:1px solid #80868b;border-radius:6px;padding:14px 14px 10px;margin:14px 0 6px;position:relative;background:#fff}
+.fld small{position:absolute;top:-9px;left:10px;background:#fff;padding:0 4px;font-size:12px;color:#5f6368}
+.fld.act{border:2px solid #1a73e8}.fld.act small{color:#1a73e8}
+.fld .car{float:right}
+.hint-s{font-size:12.5px;color:#5f6368;margin:0 0 8px}
+.alist{position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.3);z-index:4}
+.alist div{padding:14px 20px;position:relative}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;overflow-wrap:anywhere;word-break:break-all}
+.cp{display:inline-flex;gap:6px;align-items:center;color:#1a73e8;margin:6px 0 14px;position:relative;padding:2px 4px}
+.popw{position:absolute;z-index:9;left:50%;top:14px;transform:translateX(-50%);width:min(560px,94%);background:#f0f4f9;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden;color:#1f1f1f;font-family:'Noto Sans KR',Arial,sans-serif}
+.popw-t{background:#fff;border-bottom:1px solid #dadce0;padding:8px 14px;font-size:13px;display:flex;justify-content:space-between}
+.popw-b{padding:18px}
+.gcard{background:#fff;border-radius:24px;padding:26px 28px;max-width:430px;margin:0 auto;font-family:Arial,'Noto Sans KR',sans-serif}
+.gcard h5{font-size:28px;font-weight:400;margin:14px 0;line-height:1.25}
+.gcard p{font-size:13.5px;line-height:1.5;margin:8px 0}
+.gcard a{color:#1a73e8}
+.redbox{background:#fce8e6;border-radius:8px;padding:12px 14px;font-size:13.5px;line-height:1.55;margin:14px 0}
+.redbox u{color:#b3261e;font-weight:700;position:relative;display:inline-block;cursor:pointer}
+.ambox{background:#fef7e0;border-radius:8px;padding:10px 12px;font-size:11.5px;line-height:1.5;margin:10px 0;border:1px solid #fde293}
+.gbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+.gbtns span{border:1px solid #dadce0;border-radius:99px;padding:8px 22px;font-size:13px;color:#1a73e8;position:relative;background:#fff}
+.gbtns span.fill{background:#0b57d0;color:#fff;border-color:#0b57d0}
+/* app screen */
+.ap-info{display:flex;align-items:center;gap:12px;background:#e8f0fe;padding:14px 20px;font-size:14px}
+.ap-info span:last-child{margin-left:auto;color:#1a73e8}
+.ap-bg{background:#fff8e6;padding:22px 16px 30px;min-height:520px}
+.ap-card{max-width:520px;margin:0 auto;background:#fff;border:3px solid #ffc2d6;border-radius:28px;padding:22px 26px 26px;box-shadow:0 6px 18px rgba(255,150,170,.25)}
+.ap-card h5{text-align:center;color:#ff6f91;font-family:var(--ff-d);font-weight:400;font-size:28px;margin:0 0 14px}
+.ap-q{background:#e6f3fa;border-left:6px solid #5bb8e8;border-radius:16px;padding:12px 16px;margin-bottom:14px}
+.ap-q i{font-style:normal;background:#5bb8e8;color:#fff;border-radius:99px;padding:1px 12px;font-family:var(--ff-d);font-size:14px}
+.ap-q b{display:block;margin-top:6px;font-size:16.5px;line-height:1.55}
+.ap-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
+.ap-card label{display:block;font-weight:700;font-size:14px;margin-bottom:4px}
+.ap-f{border:2px solid #e6e6ea;border-radius:16px;background:#fafafa;padding:10px 14px;font-size:14.5px;min-height:42px}
+.ap-f.ta{min-height:84px}
+.ap-go{display:block;width:100%;margin-top:14px;border:0;border-radius:99px;background:#70c79f;color:#fff;font-family:var(--ff-d);font-size:22px;padding:10px;position:relative}
+.ap-ok{text-align:center;padding:18px 8px 6px}
+.ap-ok h6{margin:0;font-family:var(--ff-d);font-weight:400;font-size:30px;color:#2f9d73}
+.ap-ok p{margin:8px 0 0;color:#4d6663}
+.mini{max-width:520px;margin:18px auto 0;background:#fff;border:2px solid #1e8e3e;border-radius:12px;overflow:hidden;font-size:12.5px}
+.mini b{display:block;background:#e6f4ea;color:#1e6e34;padding:4px 12px}
+.mini div{display:grid;grid-template-columns:1.1fr .7fr .7fr 2fr;gap:0}
+.mini div span{padding:5px 10px;border-top:1px solid #e1e3e6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini .hd span{background:#f8f9fa;font-weight:700}
+@media (max-width:640px){.ed-body{grid-template-columns:36px 130px minmax(0,1fr)}.dlg-b{grid-template-columns:90px minmax(0,1fr)}.fmenu{left:90px}.sh-menu{gap:8px}}
+.alist .arrow.sd,.tlist .arrow.sd{left:auto;right:14px;margin:0}
+.alist .arrow.sd::before,.tlist .arrow.sd::before{display:none}
+.tlist .arrow.sd{right:auto;left:40%}
+#lessonGas .steps{flex-wrap:wrap;max-width:100%}
+#adots{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}
+.ed-code mark{background:#fff3a8;color:inherit}
+.ap-sheet{display:block;margin:16px auto 0;border:2px solid #1e8e3e;background:#e6f4ea;color:#1e6e34;border-radius:99px;padding:8px 22px;font-family:var(--ff-d);font-size:19px;position:relative}
+.s2g{grid-template-columns:44px 1.5fr .7fr .8fr 2.6fr 1.6fr .3fr}
+.s2g div{display:block;text-align:left;padding:0 8px;line-height:25px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#202124}
+.s2g .h{text-align:center;padding:0;color:#5f6368}
+.s2g .hd2{font-weight:700;background:#f8f9fa}
+.s2g .newrow{background:#fffbe0;animation:rowin 1.6s ease both}
+.s2g .nb{color:#e8590c;font-weight:700}
+.s2next{position:absolute;right:16px;bottom:58px;border:2px solid #27403d;background:var(--mint);color:#27403d;border-radius:99px;padding:6px 18px;font-family:var(--ff-d);font-size:17px;box-shadow:0 3px 0 #27403d;z-index:3}
+@keyframes rowin{0%{opacity:0;transform:translateY(-10px);background:#ffe066}50%{opacity:1;background:#ffe066}100%{background:#fffbe0}}
+@media (prefers-reduced-motion:reduce){.s2g .newrow{animation:none}}
+.cb{overflow:visible}
+.cb-h{border-radius:14px 14px 0 0}
+.cb pre{border-radius:0 0 14px 14px}
+.dlg .bb{display:inline-block;border-radius:6px;padding:10px 20px;background:#1a73e8;color:#fff;font-weight:500;position:relative;margin-top:8px}
+.gbtns span.fill.target{background:#0b57d0;color:#fff}
+/* STEP D: API */
+.card.api{background:var(--mint)}
+.pick{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+#lessonApi .steps{flex-wrap:wrap;max-width:100%}
+#ddots{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}
+.st-wrap{display:grid;grid-template-columns:190px minmax(0,1fr);min-height:560px}
+.st-nav{border-right:1px solid #e1e3e6;padding:16px 12px;font-size:14px;color:#444;display:grid;gap:4px;align-content:start}
+.st-nav b{font-size:17px;padding:4px 10px 12px}
+.st-nav span{padding:8px 12px;border-radius:99px}
+.st-nav span.on{background:#eceff3;font-weight:700}
+.st-main{padding:22px 26px;min-width:0;position:relative}
+.st-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.st-h h3{font-family:var(--ff-b);font-weight:700;font-size:26px;margin:0}
+.st-btn{margin-left:auto;border:1px solid #c4c7c5;border-radius:99px;padding:8px 18px;background:#fff;position:relative;font-size:14px}
+.st-btn .arrow{left:auto;right:-6px;transform:none;animation:none}
+.st-btn .arrow::before{left:auto;right:22px;margin-left:0}
+.st-tab{display:grid;grid-template-columns:1.2fr 1.6fr 1fr 1fr;gap:8px;padding:10px 4px;border-bottom:1px solid #e1e3e6;font-size:14px;color:#444}
+.st-empty{text-align:center;padding:50px 10px;color:#5f6368}
+.st-empty b{display:block;color:#202124;margin-bottom:6px}
+.keybox{background:#e8f0fe;border-radius:12px;padding:12px 16px;font-size:13.5px;margin-bottom:14px}
+.kv{margin:10px 0}
+.kv small{display:block;color:#5f6368;font-size:12.5px}
+.ps-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:18px 0 14px}
+.ps-in{border:1px solid #80868b;border-radius:6px;padding:14px 12px 10px;position:relative;background:#fff;min-height:46px;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ps-in small{position:absolute;top:-9px;left:10px;background:#fff;padding:0 4px;font-size:12px;color:#5f6368}
+.ps-btns{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.ps-btns span{border:1px solid #dadce0;border-radius:6px;padding:9px 18px;color:#1a73e8;font-weight:500;position:relative;background:#fff}
+.ps-btns span.blue{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.s3g{grid-template-columns:44px 1.3fr .6fr .7fr 1.6fr .6fr 2.2fr}
+.s3g .aic{background:#fff3a8;color:#7a4b00;font-weight:700}
 </style>
 
 <div class="wrap">
@@ -496,7 +685,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <!-- HOME -->
 <section id="home">
   <div class="home-head">
-    <h1>배포 시뮬레이션</h1>
+    <h1>바이브코딩 시뮬레이션</h1>
     <p>선생님들과 함께 따라 해보는 클릭 연습이에요. 먼저 하고 싶은 걸 골라주세요.</p>
   </div>
   <div class="pick">
@@ -512,6 +701,20 @@ button{font:inherit;color:inherit;cursor:pointer}
       <span class="tag">STEP B</span>
       <h2>깃허브</h2>
       <p>코드를 저장소에 업로드하기</p>
+      <span class="go">시작하기 →</span>
+    </button>
+    <button class="card gas" id="goGas">
+      <span class="face">A</span>
+      <span class="tag">STEP C</span>
+      <h2>앱스크립트</h2>
+      <p>구글 시트에 기록하는 웹앱 만들고 배포하기</p>
+      <span class="go">시작하기 →</span>
+    </button>
+    <button class="card api" id="goApi">
+      <span class="face">✦</span>
+      <span class="tag">STEP D</span>
+      <h2>API 받기</h2>
+      <p>AI 키를 받아서 앱에 AI 채점 기능 넣기</p>
       <span class="go">시작하기 →</span>
     </button>
   </div>
@@ -933,6 +1136,373 @@ git commit -m "first commit"</pre></div>
   </div>
 </section>
 
+<!-- LESSON: API -->
+<section id="lessonApi" hidden>
+  <div class="bar">
+    <button class="back" id="dback">← 처음으로</button>
+    <h1>API 받기 연습</h1>
+    <div class="steps" aria-label="진행 상황"><button class="arr" id="dprev" aria-label="이전 단계">◀</button><span id="dstepText">1단계</span><button class="arr" id="dnxt" aria-label="다음 단계">▶</button><span id="ddots"></span></div>
+  </div>
+  <div class="guide">
+    <span class="step" id="dbadge">1단계</span>
+    <p id="dguide"></p>
+  </div>
+  <div class="browser">
+    <div class="chrome"><i></i><i></i><i></i><span class="uw"><span class="url" id="durl"></span></span><span class="practice">연습 화면</span></div>
+
+    <div class="as" id="dsKeys" hidden>
+      <div class="st-wrap"><div class="st-nav"><b>Google AI Studio</b><span class="xw">‹ Dashboard</span><span class="on xw">🔑 API 키</span><span class="xw">▭ 프로젝트</span><span class="xw">▥ 사용량</span><span class="xw">⊘ 비율 제한</span></div>
+        <div class="st-main"><div class="st-h"><h3>API 키</h3><span class="st-btn target rect" id="dMake">🔑 API 키 만들기<span class="arrow">여기 클릭!</span></span></div>
+          <div class="st-tab"><b>키</b><b>프로젝트</b><b>생성일</b><b>결제 등급</b></div>
+          <div class="st-empty"><b>여기에 API 키가 표시되지 않나요?</b>아직 만든 키가 없어요.</div></div></div>
+    </div>
+
+    <div class="as" id="dsNew" hidden>
+      <div class="st-wrap" style="opacity:.3"><div class="st-nav"><b>Google AI Studio</b></div><div class="st-main"><div class="st-h"><h3>API 키</h3></div></div></div>
+      <div class="ovl"></div>
+      <div class="dlg" style="top:90px;width:min(520px,92%)"><h4>새 키 만들기</h4>
+        <div style="border-top:1px solid #dadce0;padding:12px 28px 18px"><p class="hint-s" style="margin-top:10px">키 이름 지정</p><div class="fld" style="margin-top:6px">Gemini API Key</div><p class="hint-s" style="margin-top:16px">가져온 프로젝트 선택</p><div class="fld" style="margin-top:6px">Default Gemini Project <span class="car">▾</span></div></div>
+        <div class="dlg-f"><span class="b xw">취소</span><span class="b blue target rect" id="dCreate">키 만들기<span class="arrow up">여기 클릭!</span></span></div></div>
+    </div>
+
+    <div class="as" id="dsDetail" hidden>
+      <div class="st-wrap" style="opacity:.3"><div class="st-nav"><b>Google AI Studio</b></div><div class="st-main"><div class="st-h"><h3>API 키</h3></div></div></div>
+      <div class="ovl"></div>
+      <div class="dlg" style="top:50px;width:min(560px,92%)"><h4>API 키 세부정보</h4>
+        <div style="border-top:1px solid #dadce0;padding:16px 28px"><div class="keybox">💡 이 키는 <b>비밀번호</b>와 같아요. 남에게 보여주면 안 돼요!</div>
+          <div class="kv"><small>API 키</small><div class="mono">AQ.Ab8Rxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div></div>
+          <div class="kv"><small>이름</small>Gemini API Key</div>
+          <div class="kv"><small>프로젝트 이름</small>projects/123456789012</div></div>
+        <div class="dlg-f"><span class="b xw">키 삭제</span><span class="b blue target rect" id="dCopy">키 복사<span class="arrow up">여기 클릭!</span></span></div></div>
+    </div>
+
+    <div class="as ed" id="dsEd" hidden>
+      <div class="ed-top"><span class="ed-logo">◆</span><b>Apps Script</b><span class="ed-name">제목 없는 프로젝트 ☁</span><div class="ed-dep target rect" id="dDeploy">배포 ▾<span class="arrow">여기 클릭!</span></div></div>
+      <div class="ed-body">
+        <div class="ed-rail"><span>ⓘ</span><span>‹›</span><span>⟲</span><span>⏰</span><span class="target rect" id="dGear">⚙<span class="arrow sd">프로젝트 설정!</span></span></div>
+        <div class="ed-files"><div class="row"><span>파일</span><span class="plus xw">＋</span></div><div class="f on xw">Code.gs</div><div class="f xw">index.html</div></div>
+        <div class="ed-main">
+          <div class="ed-tool"><span>↶</span><span>↷</span><span>💾</span><span class="on">▷ 실행</span><span>☈ 디버그</span><b>실행 로그</b></div>
+          <div class="ed-code target rect" id="dCodeBox">
+            <pre id="dcOld"><span class="ln">1</span><span class="kw">var</span> SHEET_URL = '…';
+<span class="ln">2</span><span class="kw">function</span> saveAnswer(id, name, text) {
+<span class="ln">3</span>  <span class="kw">var</span> sh = SpreadsheetApp.openByUrl(SHEET_URL)
+<span class="ln">4</span>    .getSheetByName('답안');
+<span class="ln">5</span>  sh.appendRow([new Date(), id, name, text]);
+<span class="ln">6</span>}</pre>
+            <pre id="dcNew" hidden><span class="ln">1</span><span class="kw">var</span> SHEET_URL = '…';
+<span class="ln">2</span><span class="kw">function</span> saveAnswer(id, name, text) {
+<mark><span class="ln">3</span>  <span class="kw">var</span> r = askGemini(text);  // AI 채점</mark>
+<span class="ln">4</span>  sh.appendRow([new Date(), id, name, text,
+<span class="ln">5</span>    r.score, r.feedback]);
+<span class="ln">6</span>}
+<span class="ln">7</span><span class="kw">function</span> askGemini(text) {
+<mark><span class="ln">8</span>  <span class="kw">var</span> key = PropertiesService.getScriptProperties()
+<span class="ln">9</span>    .getProperty('GEMINI_API_KEY');</mark>
+<span class="ln">10</span>  UrlFetchApp.fetch(…);
+<span class="ln">11</span>}</pre>
+            <span class="arrow mid">여기에 붙여넣기!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="as ed" id="dsSet" hidden>
+      <div class="ed-top"><span class="ed-logo">◆</span><b>Apps Script</b><span class="ed-name">제목 없는 프로젝트 ☁</span><div class="ed-dep xw">배포 ▾</div></div>
+      <div class="ed-body" style="grid-template-columns:46px minmax(0,1fr)">
+        <div class="ed-rail"><span>ⓘ</span><span>‹›</span><span>⟲</span><span>⏰</span><span style="color:#1a73e8">⚙</span></div>
+        <div class="st-main">
+          <h3 style="font-family:var(--ff-b);font-weight:700;font-size:22px;margin:0 0 6px">프로젝트 설정</h3>
+          <p class="hint-s">Google Cloud Platform(GCP) 프로젝트: 기본값</p>
+          <h4 style="font-size:18px;font-weight:700;margin:26px 0 6px">스크립트 속성</h4>
+          <p class="hint-s">여기에 넣은 값은 코드에 드러나지 않아서, 비밀번호나 API 키를 보관하기에 안전해요.</p>
+          <div id="dpA" hidden><div class="ps-btns"><span class="target rect" id="dAddProp">스크립트 속성 추가<span class="arrow up">여기 클릭!</span></span></div></div>
+          <div id="dpB" hidden>
+            <div class="ps-row"><div class="ps-in"><small>속성</small>GEMINI_API_KEY</div><div class="ps-in"><small>값</small>AQ.Ab8Rxxxxxxxxxxxxxxxxxxxx</div></div>
+            <p class="impnote">이름은 <b>GEMINI_API_KEY</b> 그대로(철자·대문자 주의!), 값에는 방금 복사한 키를 붙여넣어요.</p>
+            <div class="ps-btns"><span class="xw">스크립트 속성 추가</span><span class="blue target rect" id="dSaveProp">스크립트 속성 저장<span class="arrow up">여기 클릭!</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="as ed" id="dsDone" hidden>
+      <div class="ovl"></div>
+      <div class="dlg" style="top:70px;width:min(560px,92%)"><h4>배포 관리</h4>
+        <div style="border-top:1px solid #dadce0;padding:18px 28px;min-height:240px">
+          <p style="margin:0 0 10px">배포가 업데이트되었습니다.</p><b>버전 3</b>
+          <p class="hint-s" style="margin-top:12px">웹 앱 URL</p><div class="mono" style="color:#1a73e8">https://script.google.com/macros/s/AKfycbExampleDeployId_1234…</div>
+          <p style="background:#e6f4ea;color:#1e6e34;border-radius:8px;padding:8px 12px;margin:14px 0 0;font-weight:700">✅ 웹 앱 URL이 그대로예요! 학생들에게 다시 알려줄 필요 없어요.</p>
+        </div>
+        <div class="dlg-f"><span class="b blue target rect" id="dDone">완료<span class="arrow up">여기 클릭!</span></span></div></div>
+    </div>
+
+    <div class="as" id="dsApp" hidden>
+      <div class="ap-info"><span>ⓘ</span><span>이 애플리케이션은 Google Apps Script 사용자가 만들었습니다.</span><span>악용사례 신고 &nbsp; 자세히 알아보기</span></div>
+      <div class="ap-bg">
+        <div class="ap-card" id="dForm" hidden>
+          <h5>✨ 과학 서술형 평가 ✨</h5>
+          <div class="ap-q"><i>서술형 문항</i><b>별의 밝기가 거리에 따라 어떻게 변하는지 거리와 밝기 관계를 설명하시오.</b></div>
+          <div class="ap-row"><div><label>학번</label><div class="ap-f">30101</div></div><div><label>이름</label><div class="ap-f">김과학</div></div></div>
+          <label>나의 답안</label><div class="ap-f ta">별까지의 거리가 멀어질수록 별의 밝기는 어두워져요.</div>
+          <button class="ap-go target" id="dSubmit" type="button">제출하기<span class="arrow up">여기 클릭!</span></button>
+        </div>
+        <div id="dResult" hidden>
+          <div class="ap-card"><h5>✨ 과학 서술형 평가 ✨</h5><div class="ap-ok"><h6>제출 완료! 🎉</h6><p>답안이 저장되고, AI가 채점해서 시트에 기록했어요.</p></div></div>
+          <button class="ap-sheet target" id="dToSheet" type="button">📄 내 구글 시트 열어 보기<span class="arrow up">여기 클릭!</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="as" id="dsSheet" hidden>
+      <div class="sh-top"><div class="sh-ic">▦</div>
+        <div style="min-width:0"><div class="sh-title">제목 없는 스프레드시트 ☆</div>
+          <div class="sh-menu"><span class="xw">파일</span><span class="xw">수정</span><span class="xw">보기</span><span class="xw">삽입</span><span class="xw">서식</span><span class="xw">데이터</span><span class="xw">도구</span><span class="xw">확장 프로그램</span><span class="xw">도움말</span></div></div>
+        <div class="sh-r"><span class="sh-share xw">🔒 공유</span><span class="av">유</span></div>
+      </div>
+      <div class="sh-tool"><span>⌕</span><span>↶</span><span>↷</span><span>⎙</span><span>100% ▾</span><span>₩</span><span>%</span><b>B</b><i>I</i></div>
+      <div class="sh-grid s2g s3g" id="d3Grid"></div>
+      <button class="s2next target rect" id="dEnd" type="button">STEP D 끝! 처음으로 →<span class="arrow up">여기 클릭!</span></button>
+      <div class="sh-tabs"><span>＋</span><span>☰</span><span class="xw">시트1</span><b>답안</b></div>
+    </div>
+
+    <div class="fxlayer" id="fxD" hidden aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- LESSON: APPS SCRIPT -->
+<section id="lessonGas" hidden>
+  <div class="bar">
+    <button class="back" id="aback">← 처음으로</button>
+    <h1>앱스크립트 연습</h1>
+    <div class="steps" aria-label="진행 상황"><button class="arr" id="aprev" aria-label="이전 단계">◀</button><span id="astepText">1단계</span><button class="arr" id="anxt" aria-label="다음 단계">▶</button><span id="adots"></span></div>
+  </div>
+  <div class="guide">
+    <span class="step" id="abadge">1단계</span>
+    <p id="aguide"></p>
+  </div>
+  <div class="browser">
+    <div class="chrome"><i></i><i></i><i></i><span class="uw target rect" id="uw"><span class="url" id="aurl">docs.google.com</span><span class="arrow">주소 전체 복사!</span></span><span class="practice">연습 화면</span></div>
+
+    <div class="as" id="asSheet" hidden>
+      <div class="sh-top"><div class="sh-ic">▦</div>
+        <div style="min-width:0"><div class="sh-title">제목 없는 스프레드시트 ☆</div>
+          <div class="sh-menu"><span class="xw">파일</span><span class="xw">수정</span><span class="xw">보기</span><span class="xw">삽입</span><span class="xw">서식</span><span class="xw">데이터</span><span class="xw">도구</span><span class="xw">Gemini</span>
+            <span class="mwrap"><span class="target rect" id="mExt">확장 프로그램<span class="arrow">여기 클릭!</span></span>
+              <div class="sh-ext" id="extMenu" hidden>
+                <div class="xw">▤ 부가기능 <span>▸</span></div><div class="xw">⊙ 매크로 <span>▸</span></div>
+                <div class="target rect" id="miScript">Apps Script<span class="arrow sd">여기 클릭!</span></div><hr>
+                <div class="xw">AppSheet <span>▸</span></div><div class="xw">데이터 스튜디오 <span>▸</span></div>
+              </div></span>
+            <span class="xw">도움말</span></div></div>
+        <div class="sh-r"><span class="sh-share xw">🔒 공유</span><span class="av">유</span></div>
+      </div>
+      <div class="sh-tool"><span>⌕</span><span>↶</span><span>↷</span><span>⎙</span><span>100% ▾</span><span>₩</span><span>%</span><b>B</b><i>I</i></div>
+      <div class="sh-grid" id="shGrid"></div>
+      <div class="sh-tabs"><span>＋</span><span>☰</span><b>시트1</b></div>
+    </div>
+
+    <div class="as" id="asSheet2" hidden>
+      <div class="sh-top"><div class="sh-ic">▦</div>
+        <div style="min-width:0"><div class="sh-title">제목 없는 스프레드시트 ☆</div>
+          <div class="sh-menu"><span class="xw">파일</span><span class="xw">수정</span><span class="xw">보기</span><span class="xw">삽입</span><span class="xw">서식</span><span class="xw">데이터</span><span class="xw">도구</span><span class="xw">확장 프로그램</span><span class="xw">도움말</span></div></div>
+        <div class="sh-r"><span class="sh-share xw">🔒 공유</span><span class="av">유</span></div>
+      </div>
+      <div class="sh-tool"><span>⌕</span><span>↶</span><span>↷</span><span>⎙</span><span>100% ▾</span><span>₩</span><span>%</span><b>B</b><i>I</i></div>
+      <div class="sh-grid s2g" id="s2Grid"></div>
+      <button class="s2next target" id="goFix" type="button">코드를 고치고 싶을 땐? →<span class="arrow up">여기 클릭!</span></button>
+      <div class="sh-tabs"><span>＋</span><span>☰</span><span class="xw">시트1</span><b>답안</b></div>
+    </div>
+
+    <div class="as gm" id="asGem1" hidden>
+      <div class="gm-top"><span>☰</span><b>Gemini</b></div>
+      <div class="gm-hi">안녕하세요, 선생님</div>
+      <div class="gm-in">
+        <p>구글 시트에 연결해서 쓰는 "구글 앱스크립트 웹앱"으로 만들어 줘.<br>나는 코딩 초보야. 화면 파일(index.html)과 시트에 저장하는 파일(Code.gs), 이렇게 두 개로 나눠서 코드 블록으로 줘.<br><br>[만들 앱] 중학생용 서술형 평가 앱 …<br><br>[저장할 시트]<br>- 시트 주소: <span class="hl">https://docs.google.com/spreadsheets/d/1aBcExampleSheetId/edit</span><br>- 위 주소의 시트에 "답안" 탭이 없으면 코드가 알아서 만들어 줘.</p>
+        <div class="gm-bar"><span class="xw">＋</span><span class="xw">🛠 도구</span><button class="gm-send target" id="gSend" type="button">➤<span class="arrow up">보내기!</span></button></div>
+      </div>
+    </div>
+
+    <div class="as gm" id="asGem2" hidden>
+      <div class="gm-top"><span>☰</span><b>Gemini</b></div>
+      <div class="gm-chat">
+        <div class="gm-me">구글 시트에 연결해서 쓰는 "구글 앱스크립트 웹앱"으로 만들어 줘. …</div>
+        <div class="gm-ai"><p>✦ 서술형 평가 앱을 파일 2개로 만들었어요.</p>
+          <div class="cb"><div class="cb-h"><span>Code.gs</span><button class="target rect" id="cpGs" type="button">복사<span class="arrow">여기 클릭!</span></button></div><pre>var SHEET_URL = &#x27;https://docs.google.com/spreadsheets/d/…&#x27;;
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile(&#x27;index&#x27;)
+    .setTitle(&#x27;중학교 과학 서술형 평가&#x27;);
+}
+function saveAnswer(id, name, text) {</pre></div>
+          <div class="cb"><div class="cb-h"><span>index.html</span><button class="xw" type="button" data-msg="먼저 Code.gs부터 복사해요">복사</button></div><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;중학교 과학 서술형 평가&lt;/title&gt;
+  &lt;style&gt; … &lt;/style&gt;
+&lt;/head&gt;</pre></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="as ed" id="asEd" hidden>
+      <div class="ed-top"><span class="ed-logo">◆</span><b>Apps Script</b><span class="ed-name">제목 없는 프로젝트 ☁</span><div class="ed-dep target rect" id="bDeploy">배포 ▾<span class="arrow">여기 클릭!</span></div></div>
+      <div class="ed-body">
+        <div class="ed-rail"><span>ⓘ</span><span>‹›</span><span>⟲</span><span>⏰</span><span>⚙</span></div>
+        <div class="ed-files">
+          <div class="row"><span>파일</span><span class="plus xw" id="plusF">＋</span></div>
+          <div class="f on xw" id="fCode">Code.gs</div><div class="f xw" id="fIdx" hidden>index.html</div>
+          <div class="row"><span>라이브러리</span><span class="plus xw">＋</span></div>
+          <div class="row"><span>서비스</span><span class="plus xw">＋</span></div>
+          <div class="fmenu" id="fileMenu" hidden><div class="xw">스크립트</div><div class="target rect" id="miHtml">HTML<span class="arrow sd">HTML을 고르고 이름은 index!</span></div></div>
+        </div>
+        <div class="ed-main">
+          <div class="ed-tool"><span>↶</span><span>↷</span><span class="target rect" id="tSave">💾<span class="arrow">저장!</span></span><span class="on">▷ 실행</span><span>☈ 디버그</span><span>함수 없음</span><b>실행 로그</b></div>
+          <div class="ed-code target rect" id="edCode">
+            <pre id="codeEmpty"><span class="ln">1</span><span class="kw">function</span> myFunction() {
+<span class="ln">2</span>  
+<span class="ln">3</span>}
+<span class="ln">4</span></pre>
+            <pre id="codePasted" hidden><span class="ln">1</span><span class="kw">var</span> SHEET_URL = &#x27;https://docs.google.com/spreadsheets/d/…&#x27;;
+<span class="ln">2</span><span class="kw">function</span> doGet() {
+<span class="ln">3</span>  <span class="kw">return</span> HtmlService.createHtmlOutputFromFile(&#x27;index&#x27;)
+<span class="ln">4</span>    .setTitle(&#x27;중학교 과학 서술형 평가&#x27;);
+<span class="ln">5</span>}
+<span class="ln">6</span><span class="kw">function</span> saveAnswer(id, name, text) {
+<span class="ln">7</span>  <span class="kw">var</span> sh = SpreadsheetApp.openByUrl(SHEET_URL)
+<span class="ln">8</span>    .getSheetByName(&#x27;답안&#x27;);
+<span class="ln">9</span>  sh.appendRow([new Date(), id, name, text]);
+<span class="ln">10</span>}</pre>
+            <pre id="htmlEmpty" hidden><span class="ln">1</span>&lt;!DOCTYPE html&gt;
+<span class="ln">2</span>&lt;html&gt;
+<span class="ln">3</span>  &lt;head&gt;
+<span class="ln">4</span>    &lt;base target=&quot;_top&quot;&gt;
+<span class="ln">5</span>  &lt;/head&gt;
+<span class="ln">6</span>  &lt;body&gt;
+<span class="ln">7</span>
+<span class="ln">8</span>  &lt;/body&gt;
+<span class="ln">9</span>&lt;/html&gt;</pre>
+            <pre id="htmlPasted" hidden><span class="ln">1</span>&lt;!DOCTYPE html&gt;
+<span class="ln">2</span>&lt;html&gt;
+<span class="ln">3</span>&lt;head&gt;
+<span class="ln">4</span>  &lt;title&gt;중학교 과학 서술형 평가&lt;/title&gt;
+<span class="ln">5</span>  &lt;style&gt; … &lt;/style&gt;
+<span class="ln">6</span>&lt;/head&gt;
+<span class="ln">7</span>&lt;body&gt;
+<span class="ln">8</span>  &lt;h1&gt;✨ 과학 서술형 평가 ✨&lt;/h1&gt;
+<span class="ln">9</span>  &lt;input id=&quot;num&quot;&gt; &lt;input id=&quot;name&quot;&gt;
+<span class="ln">10</span>  &lt;textarea id=&quot;answer&quot;&gt;&lt;/textarea&gt;
+<span class="ln">11</span>  &lt;button onclick=&quot;send()&quot;&gt;제출하기&lt;/button&gt;
+<span class="ln">12</span>  &lt;script&gt;
+<span class="ln">13</span>    google.script.run.saveAnswer(…);
+<span class="ln">14</span>  &lt;/script&gt;
+<span class="ln">15</span>&lt;/body&gt;
+<span class="ln">16</span>&lt;/html&gt;</pre>
+            <pre id="htmlEdited" hidden><span class="ln">1</span>&lt;!DOCTYPE html&gt;
+<span class="ln">2</span>&lt;html&gt;
+<span class="ln">3</span>&lt;head&gt;
+<span class="ln">4</span>  &lt;title&gt;중학교 과학 서술형 평가&lt;/title&gt;
+<span class="ln">5</span>  &lt;style&gt; … &lt;/style&gt;
+<span class="ln">6</span>&lt;/head&gt;
+<span class="ln">7</span>&lt;body&gt;
+<span class="ln">8</span><mark>  &lt;h1&gt;✨ 오늘의 서술형 평가 ✨&lt;/h1&gt;</mark>
+<span class="ln">9</span>  &lt;input id=&quot;num&quot;&gt; &lt;input id=&quot;name&quot;&gt;
+<span class="ln">10</span>  &lt;textarea id=&quot;answer&quot;&gt;&lt;/textarea&gt;
+<span class="ln">11</span>  &lt;button onclick=&quot;send()&quot;&gt;제출하기&lt;/button&gt;
+<span class="ln">12</span>  &lt;script&gt;
+<span class="ln">13</span>    google.script.run.saveAnswer(…);
+<span class="ln">14</span>  &lt;/script&gt;
+<span class="ln">15</span>&lt;/body&gt;
+<span class="ln">16</span>&lt;/html&gt;</pre>
+            <span class="arrow mid">여기에 붙여넣기!</span>
+          </div>
+        </div>
+        <div class="depm" id="depMenu" hidden><div class="target rect" id="miNew">새 배포<span class="arrow sd">여기 클릭!</span></div><div class="target rect" id="miManage">배포 관리<span class="arrow sd">여기 클릭!</span></div><div class="xw">테스트 배포</div></div>
+      </div>
+      <div class="ovl" id="ovl" hidden></div>
+
+      <div class="dlg" id="dlgType" hidden><h4>새 배포</h4>
+        <div class="dlg-b"><div class="dlg-l"><span>유형 선택</span><span class="gear xw">⚙</span>
+            <div class="tlist" id="typeList" hidden><div class="target rect" id="tyWeb">웹 앱<span class="arrow sd">웹 앱을 선택!</span></div><div class="xw">API 실행 파일</div><div class="xw">부가기능</div><div class="xw">라이브러리</div></div></div>
+          <div class="dlg-r" style="display:grid;place-items:center;text-align:center;color:#444"><div><div style="font-size:30px">⚙</div>배포 유형을 선택하세요.</div></div></div>
+        <div class="dlg-f"><span class="b xw">취소</span><span class="b gray">배포</span></div>
+      </div>
+
+      <div class="dlg" id="dlgCfg" hidden><h4>새 배포</h4>
+        <div class="dlg-b"><div class="dlg-l"><span>유형 선택</span><span class="gear xw">⚙</span><div style="margin-top:46px">웹 앱</div></div>
+          <div class="dlg-r">
+            <div class="fld" style="color:#80868b">새 설명</div>
+            <b>웹 앱</b>
+            <div class="fld"><small>다음 사용자 인증 정보로 실행</small>나(teacher@example.com)<span class="car">▾</span></div>
+            <p class="hint-s">웹 앱에서 내 계정 데이터를 사용하여 실행하도록 권한이 부여됩니다.</p>
+            <div class="fld act"><small>액세스 권한이 있는 사용자</small><span id="accVal">나만</span><span class="car">▴</span>
+              <div class="alist" id="accList" hidden><div class="xw">나만</div><div class="xw">Google 계정이 있는 모든 사용자</div><div class="target rect" id="accAllOpt">모든 사용자<span class="arrow sd">모든 사용자!</span></div></div></div>
+          </div></div>
+        <div class="dlg-f"><span class="b xw">취소</span><span class="b blue target rect" id="cfgDeploy">배포<span class="arrow up">여기 클릭!</span></span></div>
+      </div>
+
+      <div class="dlg" id="dlgAuth" hidden><h4>새 배포</h4>
+        <div style="border-top:1px solid #dadce0;padding:18px 28px;min-height:330px"><p>웹 앱에서 내 데이터에 대한 액세스 권한 부여를 나에게 요청합니다.</p><span class="bb target rect" id="authBtn">액세스 승인<span class="arrow">여기 클릭!</span></span></div>
+        <div class="dlg-f"><span class="b xw">취소</span><span class="b gray">완료</span></div>
+      </div>
+
+      <div class="dlg" id="dlgDone" hidden><h4>새 배포</h4>
+        <div style="border-top:1px solid #dadce0;padding:18px 28px;min-height:330px">
+          <p style="margin:0 0 10px">배포가 업데이트되었습니다.</p><b id="doneVer">버전 1(2026. 11. 13., 오후 10:39)</b>
+          <p class="hint-s" style="margin-top:12px">배포 ID</p><div class="mono">AKfycbExampleDeployId_1234567890abcdef</div>
+          <span class="cp xw" data-msg="이건 배포 ID예요. 아래 웹 앱 URL의 복사를 눌러요">⧉ 복사</span><br>
+          <b>웹 앱</b><p class="hint-s">URL</p><div class="mono" style="color:#1a73e8">https://script.google.com/macros/s/AKfycbExampleDeployId_1234…</div>
+          <span class="cp target rect" id="cpUrl">⧉ 복사<span class="arrow sd">웹 앱 URL 복사!</span></span>
+          <p id="doneNote" hidden style="background:#e6f4ea;color:#1e6e34;border-radius:8px;padding:8px 12px;margin:10px 0 0;font-weight:700">✅ 웹 앱 URL이 그대로예요! 학생들에게 다시 알려줄 필요 없어요.</p>
+        </div>
+        <div class="dlg-f"><span class="b blue target rect xw" id="doneBtn">완료<span class="arrow up">여기 클릭!</span></span></div>
+      </div>
+
+      <div class="dlg" id="dlgManage" hidden><h4>배포 관리</h4>
+        <div class="dlg-b"><div class="dlg-l"><b style="font-size:13px">활성</b><div style="background:#e8f0fe;padding:12px 14px;margin:10px -12px">제목 없음</div><b style="font-size:13px">보관처리됨</b><p class="hint-s">보관처리된 배포가 없습니다.</p></div>
+          <div class="dlg-r">
+            <div class="fld act"><small>버전</small><span id="verVal">버전 1(2026. 11. 13., 오후 10:39)</span><span class="car">▴</span>
+              <div class="alist" id="verList" hidden><div class="target rect" id="verNew">새 버전<span class="arrow sd">새 버전을 선택!</span></div><div class="xw" style="background:#e8f0fe">버전 1(2026. 11. 13., 오후 10:39)</div></div></div>
+            <p class="hint-s" style="margin-top:46px">배포 ID</p><div class="mono">AKfycbExampleDeployId_1234567890abcdef</div>
+            <span class="cp xw">⧉ 복사</span><br><b>웹 앱</b><p class="hint-s">URL</p><div class="mono" style="color:#1a73e8">https://script.google.com/macros/s/AKfycbExampleDeployId_1234…</div>
+          </div></div>
+        <div class="dlg-f"><span class="b xw">취소</span><span class="b blue target rect" id="manDeploy">배포<span class="arrow up">여기 클릭!</span></span></div>
+      </div>
+
+      <div class="popw" id="popWarn" hidden><div class="popw-t"><span>Sign in - Google Accounts - Chrome</span><span>—  ☐  ✕</span></div>
+        <div class="popw-b"><div class="gcard"><div style="color:#d93025;font-size:40px;line-height:1">⚠</div><h5>Google hasn't verified this app</h5>
+          <p>The app is requesting access to some sensitive info in your Google Account. Until the developer (teacher@example.com) verifies this app with Google, you shouldn't use it.</p>
+          <div class="redbox">Continue only if you understand the risks and trust the developer (teacher@example.com).<br><u class="target rect" id="goUnsafe">Go to 제목 없는 프로젝트 (unsafe)<span class="arrow">여기 클릭!</span></u></div>
+          <div class="gbtns"><span class="fill xw" data-msg="Back to safety는 되돌아가는 버튼이에요. 빨간 링크를 눌러요">Back to safety</span></div></div></div></div>
+
+      <div class="popw" id="popConsent" hidden><div class="popw-t"><span>Sign in - Google Accounts - Chrome</span><span>—  ☐  ✕</span></div>
+        <div class="popw-b"><div class="gcard"><h5 style="font-size:23px;margin-top:0">제목 없는 프로젝트 wants access to your Google Account</h5>
+          <p>◉ teacher@example.com</p>
+          <div class="ambox">This app hasn't been verified by Google. Because this app is requesting some access to your Google Account, you should continue only if you know and trust this app developer.</div>
+          <p><b>When you allow this access</b>, 제목 없는 프로젝트 will be able to</p>
+          <p>● See, edit, create, and delete all your Google Sheets spreadsheets. <a>See access details</a></p>
+          <div class="gbtns"><span class="xw" data-msg="Cancel이 아니라 Continue를 눌러요">Cancel</span><span class="target rect fill" id="continueBtn">Continue<span class="arrow up">여기 클릭!</span></span></div></div></div></div>
+    </div>
+
+    <div class="as" id="asApp" hidden>
+      <div class="ap-info"><span>ⓘ</span><span>이 애플리케이션은 Google Apps Script 사용자가 만들었습니다.</span><span>악용사례 신고 &nbsp; 자세히 알아보기</span></div>
+      <div class="ap-bg">
+        <div class="ap-card" id="appForm" hidden>
+          <h5>✨ 과학 서술형 평가 ✨</h5>
+          <div class="ap-q"><i>서술형 문항</i><b>별의 밝기가 거리에 따라 어떻게 변하는지 거리와 밝기 관계를 설명하시오.</b></div>
+          <div class="ap-row"><div><label>학번</label><div class="ap-f">30101</div></div><div><label>이름</label><div class="ap-f">김과학</div></div></div>
+          <label>나의 답안</label><div class="ap-f ta">별까지의 거리가 멀어질수록 별의 밝기는 어두워져요.</div>
+          <button class="ap-go target" id="subBtn" type="button">제출하기<span class="arrow up">여기 클릭!</span></button>
+        </div>
+        <div id="appDone" hidden>
+          <div class="ap-card"><h5>✨ 과학 서술형 평가 ✨</h5><div class="ap-ok"><h6>제출 완료! 🎉</h6><p>답안이 구글 시트에 저장됐어요.</p></div></div>
+          <button class="ap-sheet target" id="toSheet" type="button">📄 내 구글 시트 열어 보기<span class="arrow up">여기 클릭!</span></button>
+        </div>
+      </div>
+      <div class="fxlayer" id="fxA" hidden aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
 </div>
 <div class="toast" id="toast" hidden></div>
 
@@ -945,7 +1515,7 @@ git commit -m "first commit"</pre></div>
     tt=setTimeout(function(){toastEl.hidden=true},2200);
   }
   function show(which){
-    home.hidden = which!=='home'; lesson.hidden = which!=='lesson'; $('#lessonGit').hidden = which!=='git';
+    home.hidden = which!=='home'; lesson.hidden = which!=='lesson'; $('#lessonGit').hidden = which!=='git'; $('#lessonGas').hidden = which!=='gas'; $('#lessonApi').hidden = which!=='api';
     window.scrollTo(0,0);
   }
   var GUIDE={
@@ -1100,8 +1670,8 @@ git commit -m "first commit"</pre></div>
       setStep(5); toast('주소를 복사했어요');
     }
   };
-  function fireFx(){
-    var L=$('#gwin'); L.innerHTML='';
+  function fireFx(L,label){
+    L=L||$('#gwin'); label=label||'배포 완료!'; L.innerHTML='';
     var cols=['#FF7F6B','#FFC94A','#4FB488','#6CB8E8','#F59BC0','#B79AE8'];
     for(var k=0;k<5;k++){
       var cx=12+k*19+(Math.random()*6-3), cy=22+(k%2)*22+Math.random()*8, dl=(k*.28).toFixed(2);
@@ -1115,7 +1685,7 @@ git commit -m "first commit"</pre></div>
       var t=document.createElement('b'); t.textContent=e;
       t.style.cssText='left:'+(8+j*20)+'%;top:'+(10+(j%2)*55)+'%;animation-delay:'+(j*.2)+'s'; L.appendChild(t);
     });
-    var th=document.createElement('div'); th.className='thumb'; th.innerHTML='<span>👍</span><em>배포 완료!</em>'; L.appendChild(th);
+    var th=document.createElement('div'); th.className='thumb'; th.innerHTML='<span>👍</span><em>'+label+'</em>'; L.appendChild(th);
   }
   function celebrate(b){
     b=b||$('#burst'); b.innerHTML='';
@@ -1131,6 +1701,139 @@ git commit -m "first commit"</pre></div>
   }
   $('#winClose').onclick=function(){$('#win').hidden=true};
   $('#winHome').onclick=function(){$('#win').hidden=true; reset(); show('home')};
+  /* ===== apps script lesson ===== */
+  var SHEETU='docs.google.com/spreadsheets/d/1aBcExampleSheetId/edit', EDU='script.google.com/u/0/home/projects/1ExampleProjectId/edit';
+  var AREG=['asSheet','extMenu','asGem1','asGem2','asEd','codeEmpty','codePasted','htmlEmpty','htmlPasted','fileMenu','fIdx','depMenu','ovl','dlgType','typeList','dlgCfg','accList','dlgAuth','popWarn','popConsent','dlgDone','dlgManage','verList','asApp','appForm','appDone','fxA','asSheet2','htmlEdited'];
+  var ED_P=['asEd','htmlPasted','fIdx'], ED_E=['asEd','htmlEdited','fIdx'];
+  var A=[
+   {t:'#uw',u:SHEETU,v:['asSheet'],g:'시트를 새로 만들었어요. <b>주소창의 주소 전체</b>를 눌러 복사해 두세요. 이 주소를 AI에게 알려줄 거예요.',m:'주소를 복사했어요'},
+   {t:'#gSend',u:'gemini.google.com/app',v:['asGem1'],g:'AI(Gemini)에 프롬프트를 붙여넣고, 시트 주소 자리에 방금 복사한 주소를 넣은 뒤 <b>보내기</b>를 눌러요.'},
+   {t:'#cpGs',u:'gemini.google.com/app/chat',v:['asGem2'],g:'AI가 파일 2개를 만들어 줬어요. <b>Code.gs</b>와 <b>index.html</b>이에요. 먼저 Code.gs의 <b>복사</b>를 눌러요.',m:'Code.gs를 복사했어요'},
+   {t:'#mExt',u:SHEETU,v:['asSheet'],g:'시트로 돌아와서 위쪽 메뉴의 <b>확장 프로그램</b>을 눌러요.'},
+   {t:'#miScript',u:SHEETU,v:['asSheet','extMenu'],g:'메뉴에서 <b>Apps Script</b>를 눌러요.'},
+   {t:'#edCode',u:EDU,v:['asEd','codeEmpty'],g:'앱스크립트 편집기가 열려요. 안에 있는 기존 코드를 <b>모두 지우고</b>(Ctrl+A) 복사한 Code.gs를 <b>붙여넣어요</b>(Ctrl+V). 코드 칸을 눌러 보세요.',m:'붙여넣었어요'},
+   {t:'#miHtml',u:EDU,v:['asEd','codePasted','fileMenu'],g:'Code.gs 붙여넣기 완료! 이제 파일 옆 <b>+</b>를 누르고 <b>HTML</b>을 골라 이름을 <b>index</b>로 써요.'},
+   {t:'#edCode',u:EDU,on:'fIdx',v:['asEd','htmlEmpty','fIdx'],g:'index.html이 생겼어요. 안의 내용을 지우고 AI가 준 index.html 코드를 <b>붙여넣어요</b>. (저장 💾 잊지 마세요!)',m:'붙여넣었어요'},
+   {t:'#bDeploy',u:EDU,on:'fIdx',v:ED_P,g:'코드 준비 끝! 오른쪽 위 <b>배포</b>를 눌러요.'},
+   {t:'#miNew',u:EDU,on:'fIdx',v:ED_P.concat('depMenu'),g:'<b>새 배포</b>를 눌러요.'},
+   {t:'#tyWeb',u:EDU,on:'fIdx',v:ED_P.concat('ovl','dlgType','typeList'),g:'톱니(유형 선택)를 누르면 목록이 나와요. <b>웹 앱</b>을 골라요.'},
+   {t:'#accAllOpt',u:EDU,on:'fIdx',v:ED_P.concat('ovl','dlgCfg','accList'),acc:'나만',g:'액세스 권한이 있는 사용자를 <b>모든 사용자</b>로 바꿔요. 학생들이 열 수 있게 하는 설정이에요.'},
+   {t:'#cfgDeploy',u:EDU,on:'fIdx',v:ED_P.concat('ovl','dlgCfg'),acc:'모든 사용자',g:'실행 계정은 <b>나</b> 그대로 두고, <b>배포</b>를 눌러요.'},
+   {t:'#authBtn',u:EDU,on:'fIdx',v:ED_P.concat('ovl','dlgAuth'),g:'처음에는 권한 승인이 필요해요. <b>액세스 승인</b>을 눌러요.'},
+   {t:'#goUnsafe',u:'accounts.google.com/signin/oauth/warning',on:'fIdx',v:ED_P.concat('ovl','dlgAuth','popWarn'),g:'무서운 경고가 떠도 괜찮아요. 내가 만든 앱이거든요! 맨 아래 <b>Go to … (unsafe)</b>를 눌러요.'},
+   {t:'#continueBtn',u:'accounts.google.com/signin/oauth/consent',on:'fIdx',v:ED_P.concat('ovl','dlgAuth','popConsent'),g:'내 시트에 접근해도 되는지 묻는 화면이에요. <b>Continue</b>를 눌러요.'},
+   {t:'#cpUrl',u:EDU,on:'fIdx',v:ED_P.concat('ovl','dlgDone'),ver:'버전 1(2026. 11. 13., 오후 10:39)',g:'배포 완료! <b>웹 앱 URL</b> 아래의 <b>복사</b>를 눌러요. (위쪽 배포 ID가 아니에요!)',m:'웹 앱 주소를 복사했어요'},
+   {t:'#subBtn',u:'script.google.com/macros/s/AKfycbExample…/exec',v:['asApp','appForm'],g:'복사한 주소를 새 탭에서 열면 내 앱이 떠요! 이름과 답을 쓰고 <b>제출하기</b>를 눌러 보세요.'},
+   {t:'#toSheet',u:'script.google.com/macros/s/AKfycbExample…/exec',v:['asApp','appDone','fxA'],g:'제출 완료! 🎉 답이 정말 시트에 들어갔을까요? <b>내 구글 시트 열어 보기</b>를 눌러 확인해요.',fx:1},
+   {t:'#goFix',u:SHEETU,v:['asSheet2'],g:'시트의 <b>"답안" 탭</b>에 학생이 쓴 답이 <b>한 줄</b> 들어왔어요! 학생이 제출할 때마다 한 줄씩 쌓여요. 이제 문항을 고치고 싶다면? 아래 버튼을 눌러요.'},
+   {t:'#tSave',u:EDU,on:'fIdx',v:ED_E,m:'저장했어요',g:'문항을 바꾸려고 코드를 고쳤어요(노란 줄). 그런데 <b>저장(💾)</b>하고 <b>다시 배포</b>해야 학생 화면이 바뀌어요. 먼저 저장을 눌러요.'},
+   {t:'#bDeploy',u:EDU,on:'fIdx',v:ED_E,g:'<b>[다시 배포]</b> 저장했다면 오른쪽 위 <b>배포</b>를 눌러요. 이때 <b>새 배포</b>가 아니에요!'},
+   {t:'#miManage',u:EDU,on:'fIdx',v:ED_E.concat('depMenu'),g:'<b>배포 관리</b>를 눌러요. (새 배포를 누르면 주소가 바뀌어요)'},
+   {t:'#verNew',u:EDU,on:'fIdx',v:ED_E.concat('ovl','dlgManage','verList'),ver:'버전 1(2026. 11. 13., 오후 10:39)',g:'오른쪽 위 연필(편집)을 누르고, 버전 목록에서 <b>새 버전</b>을 골라요.'},
+   {t:'#manDeploy',u:EDU,on:'fIdx',v:ED_E.concat('ovl','dlgManage'),ver:'새 버전',g:'버전이 <b>새 버전</b>으로 바뀌었어요. <b>배포</b>를 눌러요.'},
+   {t:'#doneBtn',u:EDU,on:'fIdx',v:ED_E.concat('ovl','dlgDone'),ver:'버전 2(2026. 11. 13., 오후 10:45)',note:1,m:'재배포 끝! 학생 주소는 그대로예요 🎉',g:'다시 배포 완료! <b>웹 앱 URL이 그대로</b>라서, 학생들에게 주소를 다시 알려줄 필요가 없어요.'}
+  ];
+  (function(){
+    var g=$('#s2Grid'), h='<div class="h"></div>';
+    'ABCDEF'.split('').forEach(function(c){h+='<div class="h">'+c+'</div>'});
+    var R=[['제출시간','학번','이름','답안','',''],['2026. 11. 13 22:41','30101','김과학','별까지의 거리가 멀어질수록…','<span class="nb">◀ 방금 들어왔어요!</span>','']];
+    for(var r=1;r<=11;r++){ h+='<div class="h">'+r+'</div>'; for(var c=0;c<6;c++){ var t=(R[r-1]&&R[r-1][c])||''; h+='<div class="'+(r===1?'hd2':(r===2?'newrow':''))+'">'+t+'</div>'; } }
+    g.innerHTML=h;
+  })();
+  var acur=1, AN=A.length;
+  (function(){
+    var g=$('#shGrid'), h='<div class="h"></div>';
+    'ABCDEFGH'.split('').forEach(function(c){h+='<div class="h">'+c+'</div>'});
+    for(var r=1;r<=13;r++){ h+='<div class="h">'+r+'</div>'; for(var c=0;c<8;c++) h+='<div'+(r===1&&c===0?' class="sel"':'')+'></div>'; }
+    g.innerHTML=h;
+    var d=''; for(var i=1;i<=AN;i++) d+='<span class="dot" id="a'+i+'"></span>'; $('#adots').innerHTML=d;
+    for(var j=1;j<=AN;j++) (function(k){ $('#a'+k).onclick=function(){aSet(k)} })(j);
+  })();
+  function aSet(n){
+    acur=n; var s=A[n-1];
+    AREG.forEach(function(id){var e=$('#'+id); if(e) e.hidden=true});
+    s.v.forEach(function(id){$('#'+id).hidden=false});
+    document.querySelectorAll('#lessonGas .target').forEach(function(e){e.classList.remove('hint')});
+    if(s.t) $(s.t).classList.add('hint');
+    $('#fCode').classList.toggle('on',s.on!=='fIdx'); $('#fIdx').classList.toggle('on',s.on==='fIdx');
+    $('#plusF').classList.toggle('on',s.v.indexOf('fileMenu')>=0);
+    $('#accVal').textContent=s.acc||'나만';
+    $('#verVal').textContent=s.ver||'';
+    if(s.ver) $('#doneVer').textContent=s.ver;
+    $('#doneNote').hidden=!s.note;
+    $('#aurl').textContent=s.u;
+    $('#abadge').textContent=n+'단계'; $('#astepText').textContent=n+'단계'; $('#aguide').innerHTML=s.g;
+    $('#aprev').disabled=(n===1); $('#anxt').disabled=(n===AN);
+    for(var i=1;i<=AN;i++){ $('#a'+i).className = i<n?'dot done':(i===n?'dot on':'dot'); }
+    $('#fxA').innerHTML=''; if(s.fx) fireFx($('#fxA'),'제출 완료!');
+  }
+  $('#goGas').onclick=function(){aSet(1); show('gas')};
+  $('#aback').onclick=function(){show('home')};
+  $('#aprev').onclick=function(){if(acur>1)aSet(acur-1)};
+  $('#anxt').onclick=function(){if(acur<AN)aSet(acur+1)};
+  /* ===== STEP D: API 받기 ===== */
+  var DEU=EDU, DEU2='script.google.com/u/0/home/projects/1ExampleProjectId/settings', APPU='script.google.com/macros/s/AKfycbExample…/exec';
+  var DREG=['dsKeys','dsNew','dsDetail','dsEd','dcOld','dcNew','dsSet','dpA','dpB','dsDone','dsApp','dForm','dResult','dsSheet','fxD'];
+  var D=[
+   {t:'#dMake',u:'aistudio.google.com/api-keys',v:['dsKeys'],g:'구글 <b>AI 스튜디오</b>의 API 키 화면이에요. (개인 구글 계정으로 로그인해요.) 오른쪽 위 <b>API 키 만들기</b>를 눌러요.'},
+   {t:'#dCreate',u:'aistudio.google.com/api-keys',v:['dsNew'],g:'키 이름과 프로젝트는 <b>그대로 두고</b> <b>키 만들기</b>를 눌러요.'},
+   {t:'#dCopy',u:'aistudio.google.com/api-keys',v:['dsDetail'],m:'키를 복사했어요',g:'키가 만들어졌어요! 이 키는 <b>비밀번호</b>와 같아서 남에게 보여주면 안 돼요. <b>키 복사</b>를 눌러요.'},
+   {t:'#dGear',u:DEU,v:['dsEd','dcOld'],g:'이제 앱스크립트 편집기로 돌아와요. 왼쪽 메뉴의 톱니바퀴 <b>프로젝트 설정</b>을 눌러요.'},
+   {t:'#dAddProp',u:DEU2,v:['dsSet','dpA'],g:'화면을 아래로 내리면 <b>스크립트 속성</b>이 있어요. 키를 안전하게 보관하는 금고예요. <b>스크립트 속성 추가</b>를 눌러요.'},
+   {t:'#dSaveProp',u:DEU2,v:['dsSet','dpB'],m:'키를 저장했어요',g:'속성 칸에 <b>GEMINI_API_KEY</b>, 값 칸에 방금 복사한 키를 <b>붙여넣고</b>(Ctrl+V) <b>스크립트 속성 저장</b>을 눌러요.'},
+   {t:'#dCodeBox',u:DEU,v:['dsEd','dcOld'],m:'붙여넣었어요',g:'이제 AI 채점이 들어간 코드가 필요해요. Padlet의 <b>4단계 프롬프트</b>로 Gemini에게 코드를 받고, Code.gs를 <b>모두 지운 뒤 새 코드로 붙여넣어요</b>.'},
+   {t:'#dDeploy',u:DEU,v:['dsEd','dcNew'],g:'붙여넣었으면 <b>저장(💾)</b>하고 오른쪽 위 <b>배포</b>를 눌러요. 재배포는 STEP C와 같아요. (배포 → 배포 관리 → 새 버전 → 배포)'},
+   {t:'#dDone',u:DEU,v:['dsDone'],m:'재배포 끝!',g:'"외부 서비스 연결" 권한을 물으면 STEP C처럼 <b>승인</b>해요. 배포 완료! 학생 주소는 그대로예요. <b>완료</b>를 눌러요.'},
+   {t:'#dSubmit',u:APPU,v:['dsApp','dForm'],g:'학생 주소를 열고 답을 써서 <b>제출하기</b>를 눌러요. 이제 AI도 같이 일해요!'},
+   {t:'#dToSheet',u:APPU,v:['dsApp','dResult','fxD'],fx:'API 연결 성공!',g:'제출 완료! 🎉 AI가 채점했을 거예요. 시트를 열어서 확인해요.'},
+   {t:'#dEnd',u:SHEETU,v:['dsSheet'],g:'<b>점수</b>와 <b>AI피드백</b> 칸이 채워졌어요! 🤖 학생이 제출하면 AI가 자동으로 채점하고 코멘트를 달아줘요.'}
+  ];
+  var dcur=1, DN=D.length;
+  (function(){
+    var g=$('#d3Grid'), h='<div class="h"></div>';
+    'ABCDEF'.split('').forEach(function(c){h+='<div class="h">'+c+'</div>'});
+    var R=[['제출시간','학번','이름','답안','점수','AI피드백'],['2026. 11. 15 22:41','30101','김과학','별까지의 거리가 멀어질수록…','8','거리와 밝기의 관계를 잘 설명했어요. 거리의 제곱에 반비례까지 쓰면 만점!']];
+    for(var r=1;r<=11;r++){ h+='<div class="h">'+r+'</div>'; for(var c=0;c<6;c++){ var t=(R[r-1]&&R[r-1][c])||''; h+='<div class="'+(r===1?'hd2':(r===2&&c>=4?'aic':''))+'">'+t+'</div>'; } }
+    g.innerHTML=h;
+    var d=''; for(var i=1;i<=DN;i++) d+='<span class="dot" id="dd'+i+'"></span>'; $('#ddots').innerHTML=d;
+    for(var j=1;j<=DN;j++) (function(k){ $('#dd'+k).onclick=function(){dSet(k)} })(j);
+  })();
+  function dSet(n){
+    dcur=n; var s=D[n-1];
+    DREG.forEach(function(id){var e=$('#'+id); if(e) e.hidden=true});
+    s.v.forEach(function(id){$('#'+id).hidden=false});
+    document.querySelectorAll('#lessonApi .target').forEach(function(e){e.classList.remove('hint')});
+    if(s.t) $(s.t).classList.add('hint');
+    $('#durl').textContent=s.u;
+    $('#dbadge').textContent=n+'단계'; $('#dstepText').textContent=n+'단계'; $('#dguide').innerHTML=s.g;
+    $('#dprev').disabled=(n===1); $('#dnxt').disabled=(n===DN);
+    for(var i=1;i<=DN;i++){ $('#dd'+i).className = i<n?'dot done':(i===n?'dot on':'dot'); }
+    $('#fxD').innerHTML=''; if(s.fx) fireFx($('#fxD'),s.fx);
+  }
+  $('#goApi').onclick=function(){dSet(1); show('api')};
+  $('#dback').onclick=function(){show('home')};
+  $('#dprev').onclick=function(){if(dcur>1)dSet(dcur-1)};
+  $('#dnxt').onclick=function(){if(dcur<DN)dSet(dcur+1)};
+  $('#lessonApi').addEventListener('click',function(e){
+    var br=e.target.closest('#lessonApi .browser'); if(!br) return;
+    var h=e.target.closest('.hint');
+    if(h){ var s=D[dcur-1]; if(s.m) toast(s.m); if(dcur<DN) dSet(dcur+1); else { toast('STEP D 끝! 수고했어요 🎉'); show('home'); } return; }
+    var w=e.target.closest('.xw');
+    if(w){
+      var st=br.querySelector('.as:not([hidden])'); if(st){ st.classList.remove('shake'); void st.offsetWidth; st.classList.add('shake'); }
+      toast(w.getAttribute('data-msg')||'거긴 아니에요. 반짝이는 곳을 눌러 보세요');
+    }
+  });
+  $('#lessonGas').addEventListener('click',function(e){
+    var br=e.target.closest('#lessonGas .browser'); if(!br) return;
+    var h=e.target.closest('.hint');
+    if(h){ var s=A[acur-1]; if(s.m) toast(s.m); if(acur<AN) aSet(acur+1); return; }
+    var w=e.target.closest('.xw');
+    if(w){
+      var st=br.querySelector('.as:not([hidden])'); if(st){ st.classList.remove('shake'); void st.offsetWidth; st.classList.add('shake'); }
+      toast(w.getAttribute('data-msg')||'거긴 아니에요. 반짝이는 곳을 눌러 보세요');
+    }
+  });
 })();
 </script>
 
